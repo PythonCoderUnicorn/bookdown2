@@ -1,6 +1,6 @@
 --- 
-title: "A Minimal Book Example"
-author: "John Doe"
+title: "RLadies Knowledge"
+author: "Zane Dax"
 date: "2022-01-18"
 site: bookdown::bookdown_site
 documentclass: book
@@ -17,7 +17,8 @@ csl: chicago-fullnote-bibliography.csl
 
 # About
 
-This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
+This is a book project at trying to condense various RLadies meetings, videos, lectures and talks into a single book. This goal is super ambitious and one that will not be complete. 
+<!-- This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$. -->
 
 ## Usage 
 
