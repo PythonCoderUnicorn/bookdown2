@@ -30,31 +30,27 @@ Each book chapter are topics covered by RLadies chapters, and their code that is
 
 <!-- The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book. -->
 
-## Render book
+## RLadies book
 
-You can render the HTML version of this example book without changing anything:
+This book is an idea to have as much of RLadies knowledge that exists in Github repos, meetups and YouTube videos to be in one readable format. Due to the global reach of R chapters there will be redundancy. This book will focus on English presentations (for now) until someone else comes along to add to this project. 
 
-1. Find the **Build** pane in the RStudio IDE, and
-
-1. Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files.
-
-Or build the book from the R console:
+It is the hope this volume of knowledge is read and shared, along with additions to keep up with the copious RLadies meetups. 
 
 
-```r
-bookdown::render_book()
-```
 
-To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>.
+<!-- ## Preview book -->
 
-## Preview book
+<!-- As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console: -->
 
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console:
-
-
-```r
-bookdown::serve_book()
-```
+<!-- ```{r eval=FALSE, include=FALSE} -->
+<!-- bookdown::serve_book() -->
+<!-- ``` -->
 
 
+<!-- ```{r include=FALSE} -->
+<!-- # automatically create a bib database for R packages -->
+<!-- knitr::write_bib(c( -->
+<!--   .packages(), 'bookdown', 'knitr', 'rmarkdown' -->
+<!-- ), 'packages.bib') -->
+<!-- ``` -->
 

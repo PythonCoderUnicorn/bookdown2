@@ -4,8 +4,7 @@ eq:binom
 thm:tri
 about
 usage
-render-book
-preview-book
+rladies-book
 hello-rladies
 a-section
 cross
@@ -23,4 +22,3 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
-url-your-book-url-like-httpsbookdown.orgyihuibookdown
