@@ -6,7 +6,7 @@ about
 usage
 render-book
 preview-book
-hello-bookdown
+hello-rladies
 a-section
 cross
 chapters-and-sub-chapters
@@ -24,4 +24,3 @@ publishing
 pages
 metadata-for-sharing
 url-your-book-url-like-httpsbookdown.orgyihuibookdown
-hello-rladies

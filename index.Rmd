@@ -17,16 +17,18 @@ csl: chicago-fullnote-bibliography.csl
 
 # About
 
-This is a book project at trying to condense various RLadies meetings, videos, lectures and talks into a single book. This goal is super ambitious and one that will not be complete. 
+This is a book project at trying to condense various **RLadies** meetings, videos, lectures and talks into a single book. This goal is super ambitious and one that will not be complete. 
 <!-- This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$. -->
 
 ## Usage 
 
-Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
+Each book chapter are topics covered by RLadies chapters, and their code that is from their github repository. The idea is to have each chapter dedicated to a topic despite which RLadies chapter presented it.
 
-Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`.
+<!-- Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading. -->
 
-The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book.
+<!-- Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`. -->
+
+<!-- The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book. -->
 
 ## Render book
 
