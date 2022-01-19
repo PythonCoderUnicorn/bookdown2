@@ -20,6 +20,73 @@ head(ChickWeight)                 # see first 6 rows of dataset
 ```
 
 
-### An unnumbered section {-}
+## Descriptive Stats
 
-Chapters and sections are numbered by default. To un-number a heading, add a `{.unnumbered}` or the shorter `{-}` at the end of the heading, like in this section.
+For simple descriptive statistics in R is by using the base R functions like `mean()`, `std()` and `max()`, among others. For this ChickWeight dataset, we want to find the mean weight.
+
+```{r}
+# find the mean weight. 
+# need to use the $ to pull the data from column 'weight'
+
+# - method 1:
+# use the function mean with our dataset$column
+mean(ChickWeight$weight)  
+
+# - method 2:
+# make a variable to store our column data
+chik_wt = ChickWeight$weight
+
+avg_chick_wt = mean(chik_wt) # save the mean chick weight as variable
+avg_chick_wt
+```
+
+Now we want to create a new variable for our deviation from the mean weight.
+
+```{r, warning=FALSE}
+# create new column.
+# dataset$NEW_COLUMN_NAME 
+
+ChickWeight$Deviation =  ChickWeight$weight - avg_chick_wt
+ChickWeight$Deviation[1:10]
+```
+
+## For Loop
+
+We can create a for loop to make our ChickWeight data into 2 categories by using a `ifelse` statement to make categories: 'Normal' and 'Large'.
+
+```{r}
+#  for loop to make categories Normal and Large based on weight
+for (x in 1:nrow(ChickWeight)) {
+  ChickWeight$Large = ifelse(ChickWeight$Deviation < 100, "Normal", "Large")
+}
+```
+
+## Data Visual
+
+We can use the base R plotting function `plot()` to plot our data.
+
+```{r}
+plot(ChickWeight$weight)
+```
+
+```{r}
+plot(ChickWeight$Diet, ChickWeight$weight)
+```
+
+```{r}
+# histogram
+hist(ChickWeight$Deviation)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

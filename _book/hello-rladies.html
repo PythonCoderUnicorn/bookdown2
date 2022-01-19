@@ -38,7 +38,16 @@
 </form>
 
       <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled"><li><a class="" href="index.html"><span class="header-section-number">Chapter 2</span> Hello RLadies</a></li></ul>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="active" href="hello-rladies.html"><span class="header-section-number">2</span> Hello RLadies</a></li>
+<li><a class="" href="cross.html"><span class="header-section-number">3</span> Cross-references</a></li>
+<li><a class="" href="parts.html"><span class="header-section-number">4</span> Parts</a></li>
+<li><a class="" href="footnotes-and-citations.html"><span class="header-section-number">5</span> Footnotes and citations</a></li>
+<li><a class="" href="blocks.html"><span class="header-section-number">6</span> Blocks</a></li>
+<li><a class="" href="sharing-your-book.html"><span class="header-section-number">7</span> Sharing your book</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
 
         <div class="book-extra">
           <p><a id="book-repo" href="https://github.com/PythonCoderUnicorn/bookdown2">View book source <i class="fab fa-github"></i></a></p>
@@ -72,24 +81,84 @@
 <span class="co">#&gt; 4     64    6     1    1</span>
 <span class="co">#&gt; 5     76    8     1    1</span>
 <span class="co">#&gt; 6     93   10     1    1</span></code></pre></div>
-<div id="an-unnumbered-section" class="section level3 unnumbered">
-<h3>An unnumbered section<a class="anchor" aria-label="anchor" href="#an-unnumbered-section"><i class="fas fa-link"></i></a>
-</h3>
-<p>Chapters and sections are numbered by default. To un-number a heading, add a <code>{.unnumbered}</code> or the shorter <code>{-}</code> at the end of the heading, like in this section.</p>
-
 </div>
+<div id="descriptive-stats" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Descriptive Stats<a class="anchor" aria-label="anchor" href="#descriptive-stats"><i class="fas fa-link"></i></a>
+</h2>
+<p>For simple descriptive statistics in R is by using the base R functions like <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code>std()</code> and <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code>, among others. For this ChickWeight dataset, we want to find the mean weight.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># find the mean weight. </span>
+<span class="co"># need to use the $ to pull the data from column 'weight'</span>
+
+<span class="co"># - method 1:</span>
+<span class="co"># use the function mean with our dataset$column</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span>  
+<span class="co">#&gt; [1] 121.8183</span>
+
+<span class="co"># - method 2:</span>
+<span class="co"># make a variable to store our column data</span>
+<span class="va">chik_wt</span> <span class="op">=</span> <span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span>
+
+<span class="va">avg_chick_wt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">chik_wt</span><span class="op">)</span> <span class="co"># save the mean chick weight as variable</span>
+<span class="va">avg_chick_wt</span>
+<span class="co">#&gt; [1] 121.8183</span></code></pre></div>
+<p>Now we want to create a new variable for our deviation from the mean weight.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create new column.</span>
+<span class="co"># dataset$NEW_COLUMN_NAME </span>
+
+<span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span> <span class="op">=</span>  <span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span> <span class="op">-</span> <span class="va">avg_chick_wt</span>
+<span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>
+<span class="co">#&gt;  [1] -79.818339 -70.818339 -62.818339 -57.818339 -45.818339</span>
+<span class="co">#&gt;  [6] -28.818339 -15.818339   3.181661  27.181661  49.181661</span></code></pre></div>
+</div>
+<div id="for-loop" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> For Loop<a class="anchor" aria-label="anchor" href="#for-loop"><i class="fas fa-link"></i></a>
+</h2>
+<p>We can create a for loop to make our ChickWeight data into 2 categories by using a <code>ifelse</code> statement to make categories: ‘Normal’ and ‘Large.’</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#  for loop to make categories Normal and Large based on weight</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">x</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">ChickWeight</span><span class="op">$</span><span class="va">Large</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span> <span class="op">&lt;</span> <span class="fl">100</span>, <span class="st">"Normal"</span>, <span class="st">"Large"</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+</div>
+<div id="data-visual" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Data Visual<a class="anchor" aria-label="anchor" href="#data-visual"><i class="fas fa-link"></i></a>
+</h2>
+<p>We can use the base R plotting function <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> to plot our data.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Diet</span>, <span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># histogram</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+
 </div>
 </div>
   <div class="chapter-nav">
-<div class="empty"></div>
-<div class="empty"></div>
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> About</a></div>
+<div class="next"><a href="cross.html"><span class="header-section-number">3</span> Cross-references</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <div id="book-on-this-page"></div>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#hello-rladies"><span class="header-section-number">2</span> Hello RLadies</a></li>
+<li><a class="nav-link" href="#start-here"><span class="header-section-number">2.1</span> StaRt here</a></li>
+<li><a class="nav-link" href="#descriptive-stats"><span class="header-section-number">2.2</span> Descriptive Stats</a></li>
+<li><a class="nav-link" href="#for-loop"><span class="header-section-number">2.3</span> For Loop</a></li>
+<li><a class="nav-link" href="#data-visual"><span class="header-section-number">2.4</span> Data Visual</a></li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-          
+<li><a id="book-source" href="https://github.com/PythonCoderUnicorn/bookdown2/blob/master/01-intro.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/PythonCoderUnicorn/bookdown2/edit/master/01-intro.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -109,6 +178,34 @@
   </div>
 
 </div></div>
-</footer>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
 </body>
 </html>

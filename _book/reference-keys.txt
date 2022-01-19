@@ -6,7 +6,10 @@ about
 usage
 rladies-book
 hello-rladies
-a-section
+start-here
+descriptive-stats
+for-loop
+data-visual
 cross
 chapters-and-sub-chapters
 captioned-figures-and-tables
@@ -22,5 +25,3 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
-url-your-book-url-like-httpsbookdown.orgyihuibookdown
-start-here
