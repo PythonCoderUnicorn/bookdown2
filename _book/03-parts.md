@@ -225,32 +225,10 @@ Usually spatial data comes as a **raster** or as a **polygon** format. We usuall
 Or we have lat-Lon data that we can transform into an sf object as we did before. 
 We can also get raster files such as climate raster files or remote sensing data, land use, etc. Most of the times we want to plot all this info together (raster + one or more shape-files). 
 
-
-```r
+```{}
 require(rgdal)
-#> Loading required package: rgdal
-#> Loading required package: sp
-#> Please note that rgdal will be retired by the end of 2023,
-#> plan transition to sf/stars/terra functions using GDAL and PROJ
-#> at your earliest convenience.
-#> 
-#> rgdal: version: 1.5-28, (SVN revision 1158)
-#> Geospatial Data Abstraction Library extensions to R successfully loaded
-#> Loaded GDAL runtime: GDAL 3.2.1, released 2020/12/29
-#> Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rgdal/gdal
-#> GDAL binary built with GEOS: TRUE 
-#> Loaded PROJ runtime: Rel. 7.2.1, January 1st, 2021, [PJ_VERSION: 721]
-#> Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rgdal/proj
-#> PROJ CDN enabled: FALSE
-#> Linking to sp version:1.4-6
-#> To mute warnings of possible GDAL/OSR exportToProj4() degradation,
-#> use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.
-#> Overwritten PROJ_LIB was /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rgdal/proj
 require(raster) #Package to work with raster files
-#> Loading required package: raster
 require(sf) #Package to work with shape files
-#> Loading required package: sf
-#> Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
 ```
 
 

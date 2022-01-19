@@ -73,7 +73,7 @@
 <span class="co"># the specific dataset we want is called ChickWeight</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"ChickWeight"</span><span class="op">)</span>               <span class="co"># function to pull out specific dataset</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span>                 <span class="co"># see first 6 rows of dataset</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span>                 <span class="co"># see first 6 rows of dataset</span>
 <span class="co">#&gt;   weight Time Chick Diet</span>
 <span class="co">#&gt; 1     42    0     1    1</span>
 <span class="co">#&gt; 2     51    2     1    1</span>
@@ -120,7 +120,7 @@
 <p>We can create a for loop to make our ChickWeight data into 2 categories by using a <code>ifelse</code> statement to make categories: ‘Normal’ and ‘Large.’</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#  for loop to make categories Normal and Large based on weight</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">x</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">x</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">ChickWeight</span><span class="op">$</span><span class="va">Large</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span> <span class="op">&lt;</span> <span class="fl">100</span>, <span class="st">"Normal"</span>, <span class="st">"Large"</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
@@ -128,16 +128,16 @@
 <h2>
 <span class="header-section-number">2.4</span> Data Visual<a class="anchor" aria-label="anchor" href="#data-visual"><i class="fas fa-link"></i></a>
 </h2>
-<p>We can use the base R plotting function <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> to plot our data.</p>
+<p>We can use the base R plotting function <code><a href="https://rdrr.io/pkg/raster/man/plot.html">plot()</a></code> to plot our data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Diet</span>, <span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Diet</span>, <span class="va">ChickWeight</span><span class="op">$</span><span class="va">weight</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># histogram</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/hist.html">hist</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">$</span><span class="va">Deviation</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="01-intro_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
 
 </div>
