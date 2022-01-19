@@ -399,7 +399,7 @@ tm_layout(legend.position = c("left","bottom"))
 ```
 
 
-`tmap` is a grate library to make maps. Check the [vignette](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
+`tmap` is a great library to make maps. Check the [vignette](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
 
 
 
