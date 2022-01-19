@@ -93,7 +93,7 @@ LiteracyByState = summarise(Literacy, PercentLiterate = mean(Literate/Population
 ```
 
 An exercise example, literacy and toilets.
-```
+```{}
 LiteracyHygiene <- select(india.districts.census.2011, State.name, District.name, Literate, Households, Having_latrine_facility_within_the_premises_Total_Households)
 LiteracyHygiene_Calculated<-mutate(LiteracyHygiene, PercentToilet = Having_latrine_facility_within_the_premises_Total_Households / Households * 100,
                      AverageLiterate = Literate/Households)

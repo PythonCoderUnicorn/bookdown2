@@ -101,6 +101,27 @@ Literacy = group_by(india_census, State.name)
 LiteracyByState = summarise(Literacy, PercentLiterate = mean(Literate/Population*100) )
 ```
 
+An exercise example, literacy and toilets.
+```{}
+LiteracyHygiene <- select(india.districts.census.2011, State.name, District.name, Literate, Households, Having_latrine_facility_within_the_premises_Total_Households)
+LiteracyHygiene_Calculated<-mutate(LiteracyHygiene, PercentToilet = Having_latrine_facility_within_the_premises_Total_Households / Households * 100,
+                     AverageLiterate = Literate/Households)
+
+LiteracyHygienePlot <- ggplot(LiteracyHygiene_Calculated, aes(x=PercentToilet, y=AverageLiterate)) + 
+  geom_point(aes(col=State.name, size=Households)) + 
+  geom_smooth(method="glm", se=T) + 
+  labs(subtitle="Toilets and Baths", 
+       y="Average Literate People per Household", 
+       x="Percentage with Toilet", 
+       title="Scatterplot", 
+       caption = "Indian Census 2011")
+
+plot(LiteracyHygienePlot)
+
+library(plotly)
+ggplotly(LiteracyHygienePlot)
+
+```
 
 
 

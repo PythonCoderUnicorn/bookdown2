@@ -127,6 +127,25 @@ Tidy data is data that has data or values for each column (variable) and each ro
 <span class="va">Literacy</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">india_census</span>, <span class="va">State.name</span><span class="op">)</span>
 
 <span class="va">LiteracyByState</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="va">Literacy</span>, PercentLiterate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Literate</span><span class="op">/</span><span class="va">Population</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+<p>An exercise example, literacy and toilets.</p>
+<pre><code>LiteracyHygiene &lt;- select(india.districts.census.2011, State.name, District.name, Literate, Households, Having_latrine_facility_within_the_premises_Total_Households)
+LiteracyHygiene_Calculated&lt;-mutate(LiteracyHygiene, PercentToilet = Having_latrine_facility_within_the_premises_Total_Households / Households * 100,
+                     AverageLiterate = Literate/Households)
+
+LiteracyHygienePlot &lt;- ggplot(LiteracyHygiene_Calculated, aes(x=PercentToilet, y=AverageLiterate)) + 
+  geom_point(aes(col=State.name, size=Households)) + 
+  geom_smooth(method="glm", se=T) + 
+  labs(subtitle="Toilets and Baths", 
+       y="Average Literate People per Household", 
+       x="Percentage with Toilet", 
+       title="Scatterplot", 
+       caption = "Indian Census 2011")
+
+plot(LiteracyHygienePlot)
+
+library(plotly)
+ggplotly(LiteracyHygienePlot)
+</code></pre>
 
 </div>
 </div>
