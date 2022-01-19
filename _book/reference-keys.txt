@@ -11,6 +11,10 @@ data-visual
 tidyverse
 tidy-data
 dplyr-library
+filter
+arrange
+mutate
+select
 parts
 footnotes-and-citations
 footnotes

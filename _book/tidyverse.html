@@ -80,19 +80,38 @@ Tidy data is data that has data or values for each column (variable) and each ro
 
 <span class="co"># read in the data</span>
 <span class="va">india_census</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'https://raw.githubusercontent.com/nishusharma1608/India-Census-2011-Analysis/master/india-districts-census-2011.csv'</span><span class="op">)</span></code></pre></div>
+<div id="filter" class="section level4" number="3.1.1.1">
+<h4>
+<span class="header-section-number">3.1.1.1</span> filter<a class="anchor" aria-label="anchor" href="#filter"><i class="fas fa-link"></i></a>
+</h4>
 <p>We now want to <strong>filter</strong> data only from Maharashtra and Gajarat, we will call the variable <code>WestStates</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">WestStates</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">india_census</span>, <span class="va">state.name</span> <span class="op">==</span> <span class="st">'Maharashtra'</span> <span class="op">|</span> <span class="va">State.name</span> <span class="op">==</span><span class="st">'Gajarat'</span><span class="op">)</span> </code></pre></div>
+</div>
+<div id="arrange" class="section level4" number="3.1.1.2">
+<h4>
+<span class="header-section-number">3.1.1.2</span> arrange<a class="anchor" aria-label="anchor" href="#arrange"><i class="fas fa-link"></i></a>
+</h4>
 <p><strong>Arrange</strong> the west states in descending order (highest to lowest) by agricultural workers.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">AgriDist</span><span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">WestStates</span>, <span class="va">Agricultural_Workers</span><span class="op">)</span>
 <span class="va">AgriDistDes</span><span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">WestStates</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Agricultural_Workers</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="mutate" class="section level4" number="3.1.1.3">
+<h4>
+<span class="header-section-number">3.1.1.3</span> mutate<a class="anchor" aria-label="anchor" href="#mutate"><i class="fas fa-link"></i></a>
+</h4>
 <p>Using the <strong>mutate</strong> function to calculate the percentage of computers &amp; internet per households.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">india_census</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">india_census</span>,
                       Percent_Internet <span class="op">=</span> <span class="va">Households_with_Internet</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span>,
                       Percent_Computer <span class="op">=</span> <span class="va">Households_with_Computer</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span>
                       <span class="op">)</span></code></pre></div>
+</div>
+<div id="select" class="section level4" number="3.1.1.4">
+<h4>
+<span class="header-section-number">3.1.1.4</span> select<a class="anchor" aria-label="anchor" href="#select"><i class="fas fa-link"></i></a>
+</h4>
 <p>Now that we have the percent of homes with internet, let us <strong>select</strong> the data on households with latrines and bathing facilities.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ModernHomes</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">india_census</span>,
@@ -147,6 +166,7 @@ library(plotly)
 ggplotly(LiteracyHygienePlot)
 </code></pre>
 
+</div>
 </div>
 </div>
 </div>

@@ -28,7 +28,7 @@ library(tidyverse)
 india_census = read.csv('https://raw.githubusercontent.com/nishusharma1608/India-Census-2011-Analysis/master/india-districts-census-2011.csv')
 ```
 
-
+#### filter
 We now want to **filter** data only from Maharashtra and Gajarat, we will call the variable `WestStates`.
 
 
@@ -36,6 +36,7 @@ We now want to **filter** data only from Maharashtra and Gajarat, we will call t
 WestStates = filter(india_census, state.name == 'Maharashtra' | State.name =='Gajarat') 
 ```
 
+#### arrange
 **Arrange** the west states in descending order (highest to lowest) by agricultural workers.
 
 
@@ -44,7 +45,7 @@ AgriDist<- arrange(WestStates, Agricultural_Workers)
 AgriDistDes<- arrange(WestStates, desc(Agricultural_Workers))
 ```
 
-
+#### mutate
 Using the **mutate** function to calculate the percentage of computers & internet per households.
 
 ```r
@@ -54,6 +55,7 @@ india_census = mutate(india_census,
                       )
 ```
 
+#### select
 
 Now that we have the percent of homes with internet, let us **select** the data on households with latrines and bathing facilities.
 
