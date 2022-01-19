@@ -15,7 +15,7 @@ filter
 arrange
 mutate
 select
-parts
+geo-data
 footnotes-and-citations
 footnotes
 citations
@@ -27,3 +27,4 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
+url-your-book-url-like-httpsbookdown.orgyihuibookdown
