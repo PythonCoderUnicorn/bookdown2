@@ -71,9 +71,8 @@ Tidy data is data that has data or values for each column (variable) and each ro
 <span class="header-section-number">3.1.1</span> dplyr library<a class="anchor" aria-label="anchor" href="#dplyr-library"><i class="fas fa-link"></i></a>
 </h3>
 <p>Inside the <strong>tidyverse</strong> library is the dplyr library which is helpful when creating new variables, renaming or reordering observations, selecting specific observations and calculating summary statistics among many other functions.</p>
-<p>The dataset for this section will be the Indian Census (2011), dataset is available <a href="https://github.com/nishusharma1608/India-Census-2011-Analysis/blob/master/india-districts-census-2011.csv">here</a>, <em>Remember to click on ‘raw’ data format first to load in data, you should see white background and black text CSV data, copy the url link in order to read in the data</em>.</p>
-<p>The tidyverse library brings along other libraries and when you load tidyverse you will a bunch of warnings in the console, these are no concern to you, basically telling you that one library hides another for function use. To turn off warnings in your Rmd file, inside the code chunk {r} set warning to false <code>{r, warning= FALSE, message= FALSE}</code>.
-s</p>
+<p>The dataset for this section will be the Indian Census (2011), dataset is available <a href="https://github.com/nishusharma1608/India-Census-2011-Analysis/blob/master/india-districts-census-2011.csv">here</a>. <em>Remember to click on ‘raw’ data format first to load in data, you should see white background and black text CSV data, copy the url link in order to read in the data</em>.</p>
+<p>The tidyverse library brings along other libraries and when you load tidyverse you will a bunch of warnings in the console, these are no concern to you, basically telling you that one library hides another for function use. To turn off warnings in your Rmd file, inside the code chunk {r} set warning to false <code>{r, warning= FALSE, message= FALSE}</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># step 1 - install tidyverse library</span>
 <span class="co"># install.packages('tidyverse')  # comment-out to run </span>
@@ -81,20 +80,55 @@ s</p>
 
 <span class="co"># read in the data</span>
 <span class="va">india_census</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'https://raw.githubusercontent.com/nishusharma1608/India-Census-2011-Analysis/master/india-districts-census-2011.csv'</span><span class="op">)</span></code></pre></div>
-</div>
-</div>
-<div id="section-2" class="section level2" number="3.2">
-<h2>
-<span class="header-section-number">3.2</span> section 2<a class="anchor" aria-label="anchor" href="#section-2"><i class="fas fa-link"></i></a>
-</h2>
-<!-- Don't miss Table \@ref(tab:nice-tab). -->
-<!-- ```{r nice-tab, tidy=FALSE} -->
-<!-- knitr::kable( -->
-<!--   head(pressure, 10), caption = 'Here is a nice table!', -->
-<!--   booktabs = TRUE -->
-<!-- ) -->
-<!-- ``` -->
+<p>We now want to <strong>filter</strong> data only from Maharashtra and Gajarat, we will call the variable <code>WestStates</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">WestStates</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">india_census</span>, <span class="va">state.name</span> <span class="op">==</span> <span class="st">'Maharashtra'</span> <span class="op">|</span> <span class="va">State.name</span> <span class="op">==</span><span class="st">'Gajarat'</span><span class="op">)</span> </code></pre></div>
+<p><strong>Arrange</strong> the west states in descending order (highest to lowest) by agricultural workers.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">AgriDist</span><span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">WestStates</span>, <span class="va">Agricultural_Workers</span><span class="op">)</span>
+<span class="va">AgriDistDes</span><span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">WestStates</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Agricultural_Workers</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Using the <strong>mutate</strong> function to calculate the percentage of computers &amp; internet per households.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">india_census</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">india_census</span>,
+                      Percent_Internet <span class="op">=</span> <span class="va">Households_with_Internet</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span>,
+                      Percent_Computer <span class="op">=</span> <span class="va">Households_with_Computer</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span>
+                      <span class="op">)</span></code></pre></div>
+<p>Now that we have the percent of homes with internet, let us <strong>select</strong> the data on households with latrines and bathing facilities.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ModernHomes</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">india_census</span>,
+                     <span class="va">State.name</span>, <span class="va">District.name</span>, <span class="va">Households</span>, <span class="va">Having_bathing_facility_Total_Households</span>,
+                  <span class="va">Having_latrine_facility_within_the_premises_Total_Households</span><span class="op">)</span>
 
+<span class="co"># and standardize the results</span>
+<span class="va">ModernHomes2</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">ModernHomes</span>, PercentToilet <span class="op">=</span> <span class="va">Having_latrine_facility_within_the_premises_Total_Households</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span>,
+                     PercentBath <span class="op">=</span> <span class="va">Having_bathing_facility_Total_Households</span> <span class="op">/</span> <span class="va">Households</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<p>Visualize the data with the library ggplot, which comes attached (loaded) with tidyverse, but is good to load it anyway.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+
+<span class="va">ModernHomesPlot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ModernHomes2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PercentToilet</span>, y<span class="op">=</span><span class="va">PercentBath</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>col<span class="op">=</span><span class="va">State.name</span>, size<span class="op">=</span><span class="va">Households</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"glm"</span>, se<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>subtitle<span class="op">=</span><span class="st">"Toilets and Baths"</span>, 
+       y<span class="op">=</span><span class="st">"Percentage with Bath"</span>, 
+       x<span class="op">=</span><span class="st">"Percentage with Toilet"</span>, 
+       title<span class="op">=</span><span class="st">"Scatterplot"</span>, 
+       caption <span class="op">=</span> <span class="st">"Indian Census 2011"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ModernHomesPlot</span><span class="op">)</span>
+<span class="co">#&gt; `geom_smooth()` using formula 'y ~ x'</span></code></pre></div>
+<div class="inline-figure"><img src="02-tidyverse_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<p>Summary of literacy for all our data by state</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="va">india_census</span>, Percent_Literate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Literate</span><span class="op">/</span><span class="va">Population</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span> <span class="op">)</span>
+<span class="co">#&gt;   Percent_Literate</span>
+<span class="co">#&gt; 1          62.4632</span>
+
+<span class="va">Literacy</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">india_census</span>, <span class="va">State.name</span><span class="op">)</span>
+
+<span class="va">LiteracyByState</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="va">Literacy</span>, PercentLiterate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Literate</span><span class="op">/</span><span class="va">Population</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+
+</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -107,7 +141,6 @@ s</p>
 <li>
 <a class="nav-link" href="#tidy-data"><span class="header-section-number">3.1</span> Tidy Data</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#dplyr-library"><span class="header-section-number">3.1.1</span> dplyr library</a></li></ul>
 </li>
-<li><a class="nav-link" href="#section-2"><span class="header-section-number">3.2</span> section 2</a></li>
 </ul>
 
       <div class="book-extra">

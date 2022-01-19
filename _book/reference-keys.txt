@@ -11,7 +11,6 @@ data-visual
 tidyverse
 tidy-data
 dplyr-library
-section-2
 parts
 footnotes-and-citations
 footnotes
