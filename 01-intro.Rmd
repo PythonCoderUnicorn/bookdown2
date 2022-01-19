@@ -1,10 +1,24 @@
 # Hello RLadies
 
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (`#`) per .Rmd file.
+All chapters of **RLadies** are condensed under RLadies Global and each chapter will try to showcase the topic by as many RLadies chapters as possible without redundancy. 
 
-## A section
+## StaRt here
 
-All chapter sections start with a second-level (`##`) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+This section is about starting in RStudio using R. This starter code is from **RLadies Freiburg** repo. Starting out with using base R which entails the use of the `$` dollar sign, which is used to grab a specific column from a dataset.
+
+The dataset you will use is from a library called *datasets* which is a R package that contains various datasets to be used for your learning needs. Using either a simple .R file or Rmd file with a `{r}` code chunk, enter the code below for basic descriptive statistics.
+
+```{r}
+#--- step one is to install the library package
+# install.packages('datasets')    # comment out to run
+library(datasets)                 # load library
+
+# the specific dataset we want is called ChickWeight
+data("ChickWeight")               # function to pull out specific dataset
+
+head(ChickWeight)                 # see first 6 rows of dataset
+```
+
 
 ### An unnumbered section {-}
 
