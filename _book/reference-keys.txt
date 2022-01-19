@@ -1,5 +1,3 @@
-fig:nice-fig
-tab:nice-tab
 eq:binom
 thm:tri
 about
@@ -10,9 +8,10 @@ start-here
 descriptive-stats
 for-loop
 data-visual
-cross
-chapters-and-sub-chapters
-captioned-figures-and-tables
+tidyverse
+tidy-data
+dplyr-library
+section-2
 parts
 footnotes-and-citations
 footnotes

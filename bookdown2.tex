@@ -163,108 +163,153 @@ It is the hope this volume of knowledge is read and shared, along with additions
 \hypertarget{hello-rladies}{%
 \chapter{Hello RLadies}\label{hello-rladies}}
 
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (\texttt{\#}) per .Rmd file.
+All chapters of \textbf{RLadies} are condensed under RLadies Global and each chapter will try to showcase the topic by as many RLadies chapters as possible without redundancy.
 
-\hypertarget{a-section}{%
-\section{A section}\label{a-section}}
+\hypertarget{start-here}{%
+\section{StaRt here}\label{start-here}}
 
-All chapter sections start with a second-level (\texttt{\#\#}) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+This section is about starting in RStudio using R. This starter code is from \textbf{RLadies Freiburg} repo. Starting out with using base R which entails the use of the \texttt{\$} dollar sign, which is used to grab a specific column from a dataset.
 
-\hypertarget{an-unnumbered-section}{%
-\subsection*{An unnumbered section}\label{an-unnumbered-section}}
-\addcontentsline{toc}{subsection}{An unnumbered section}
-
-Chapters and sections are numbered by default. To un-number a heading, add a \texttt{\{.unnumbered\}} or the shorter \texttt{\{-\}} at the end of the heading, like in this section.
-
-\hypertarget{cross}{%
-\chapter{Cross-references}\label{cross}}
-
-Cross-references make it easier for your readers to find and link to elements in your book.
-
-\hypertarget{chapters-and-sub-chapters}{%
-\section{Chapters and sub-chapters}\label{chapters-and-sub-chapters}}
-
-There are two steps to cross-reference any heading:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Label the heading: \texttt{\#\ Hello\ world\ \{\#nice-label\}}.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Leave the label off if you like the automated heading generated based on your heading title: for example, \texttt{\#\ Hello\ world} = \texttt{\#\ Hello\ world\ \{\#hello-world\}}.
-  \item
-    To label an un-numbered heading, use: \texttt{\#\ Hello\ world\ \{-\#nice-label\}} or \texttt{\{\#\ Hello\ world\ .unnumbered\}}.
-  \end{itemize}
-\item
-  Next, reference the labeled heading anywhere in the text using \texttt{\textbackslash{}@ref(nice-label)}; for example, please see Chapter \ref{cross}.
-
-  \begin{itemize}
-  \tightlist
-  \item
-    If you prefer text as the link instead of a numbered reference use: \protect\hyperlink{cross}{any text you want can go here}.
-  \end{itemize}
-\end{enumerate}
-
-\hypertarget{captioned-figures-and-tables}{%
-\section{Captioned figures and tables}\label{captioned-figures-and-tables}}
-
-Figures and tables \emph{with captions} can also be cross-referenced from elsewhere in your book using \texttt{\textbackslash{}@ref(fig:chunk-label)} and \texttt{\textbackslash{}@ref(tab:chunk-label)}, respectively.
-
-See Figure \ref{fig:nice-fig}.
+The dataset you will use is from a library called \emph{datasets} which is a R package that contains various datasets to be used for your learning needs. Using either a simple .R file or Rmd file with a \texttt{\{r\}} code chunk, enter the code below for basic descriptive statistics.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, .}\DecValTok{1}\NormalTok{, .}\DecValTok{1}\NormalTok{))}
-\FunctionTok{plot}\NormalTok{(pressure, }\AttributeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{)}
+\CommentTok{\#{-}{-}{-} step one is to install the library package}
+\CommentTok{\# install.packages(\textquotesingle{}datasets\textquotesingle{})    \# comment out to run}
+\FunctionTok{library}\NormalTok{(datasets)                 }\CommentTok{\# load library}
+
+\CommentTok{\# the specific dataset we want is called ChickWeight}
+\FunctionTok{data}\NormalTok{(}\StringTok{"ChickWeight"}\NormalTok{)               }\CommentTok{\# function to pull out specific dataset}
+
+\FunctionTok{head}\NormalTok{(ChickWeight)                 }\CommentTok{\# see first 6 rows of dataset}
+\CommentTok{\#\textgreater{}   weight Time Chick Diet}
+\CommentTok{\#\textgreater{} 1     42    0     1    1}
+\CommentTok{\#\textgreater{} 2     51    2     1    1}
+\CommentTok{\#\textgreater{} 3     59    4     1    1}
+\CommentTok{\#\textgreater{} 4     64    6     1    1}
+\CommentTok{\#\textgreater{} 5     76    8     1    1}
+\CommentTok{\#\textgreater{} 6     93   10     1    1}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
+\hypertarget{descriptive-stats}{%
+\section{Descriptive Stats}\label{descriptive-stats}}
 
-{\centering \includegraphics[width=0.8\linewidth]{02-cross-refs_files/figure-latex/nice-fig-1} 
-
-}
-
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
-
-Don't miss Table \ref{tab:nice-tab}.
+For simple descriptive statistics in R is by using the base R functions like \texttt{mean()}, \texttt{std()} and \texttt{max()}, among others. For this ChickWeight dataset, we want to find the mean weight.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
-  \FunctionTok{head}\NormalTok{(pressure, }\DecValTok{10}\NormalTok{), }\AttributeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \AttributeTok{booktabs =} \ConstantTok{TRUE}
-\NormalTok{)}
+\CommentTok{\# find the mean weight. }
+\CommentTok{\# need to use the $ to pull the data from column \textquotesingle{}weight\textquotesingle{}}
+
+\CommentTok{\# {-} method 1:}
+\CommentTok{\# use the function mean with our dataset$column}
+\FunctionTok{mean}\NormalTok{(ChickWeight}\SpecialCharTok{$}\NormalTok{weight)  }
+\CommentTok{\#\textgreater{} [1] 121.8183}
+
+\CommentTok{\# {-} method 2:}
+\CommentTok{\# make a variable to store our column data}
+\NormalTok{chik\_wt }\OtherTok{=}\NormalTok{ ChickWeight}\SpecialCharTok{$}\NormalTok{weight}
+
+\NormalTok{avg\_chick\_wt }\OtherTok{=} \FunctionTok{mean}\NormalTok{(chik\_wt) }\CommentTok{\# save the mean chick weight as variable}
+\NormalTok{avg\_chick\_wt}
+\CommentTok{\#\textgreater{} [1] 121.8183}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{table}
+Now we want to create a new variable for our deviation from the mean weight.
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rr}
-\toprule
-temperature & pressure\\
-\midrule
-0 & 0.0002\\
-20 & 0.0012\\
-40 & 0.0060\\
-60 & 0.0300\\
-80 & 0.0900\\
-\addlinespace
-100 & 0.2700\\
-120 & 0.7500\\
-140 & 1.8500\\
-160 & 4.2000\\
-180 & 8.8000\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# create new column.}
+\CommentTok{\# dataset$NEW\_COLUMN\_NAME }
+
+\NormalTok{ChickWeight}\SpecialCharTok{$}\NormalTok{Deviation }\OtherTok{=}\NormalTok{  ChickWeight}\SpecialCharTok{$}\NormalTok{weight }\SpecialCharTok{{-}}\NormalTok{ avg\_chick\_wt}
+\NormalTok{ChickWeight}\SpecialCharTok{$}\NormalTok{Deviation[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]}
+\CommentTok{\#\textgreater{}  [1] {-}79.818339 {-}70.818339 {-}62.818339 {-}57.818339 {-}45.818339}
+\CommentTok{\#\textgreater{}  [6] {-}28.818339 {-}15.818339   3.181661  27.181661  49.181661}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{for-loop}{%
+\section{For Loop}\label{for-loop}}
+
+We can create a for loop to make our ChickWeight data into 2 categories by using a \texttt{ifelse} statement to make categories: `Normal' and `Large'.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#  for loop to make categories Normal and Large based on weight}
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(ChickWeight)) \{}
+\NormalTok{  ChickWeight}\SpecialCharTok{$}\NormalTok{Large }\OtherTok{=} \FunctionTok{ifelse}\NormalTok{(ChickWeight}\SpecialCharTok{$}\NormalTok{Deviation }\SpecialCharTok{\textless{}} \DecValTok{100}\NormalTok{, }\StringTok{"Normal"}\NormalTok{, }\StringTok{"Large"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-visual}{%
+\section{Data Visual}\label{data-visual}}
+
+We can use the base R plotting function \texttt{plot()} to plot our data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(ChickWeight}\SpecialCharTok{$}\NormalTok{weight)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{01-intro_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(ChickWeight}\SpecialCharTok{$}\NormalTok{Diet, ChickWeight}\SpecialCharTok{$}\NormalTok{weight)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{01-intro_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# histogram}
+\FunctionTok{hist}\NormalTok{(ChickWeight}\SpecialCharTok{$}\NormalTok{Deviation)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{01-intro_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{tidyverse}{%
+\chapter{Tidyverse}\label{tidyverse}}
+
+The tidyverse has its own book called \emph{R for Data Science} by Hadley Wickham \& Garrett Grolemund (available online). This section will discuss a few functions out of the library that are very useful to know.
+
+\hypertarget{tidy-data}{%
+\section{Tidy Data}\label{tidy-data}}
+
+Data Transformation and Introduction to \textbf{Tidyverse} library. This section is by \textbf{RLadies Freiburg} Divya Seernani.
+Tidy data is data that has data or values for each column (variable) and each row (observation). The paradigm:
+\texttt{import} -\textgreater{} \texttt{tidy} -\textgreater{} {[}Transform \textless-\textgreater{} Visualize \textless-\textgreater{} Model{]} -\textgreater{} Communicate
+
+\hypertarget{dplyr-library}{%
+\subsection{dplyr library}\label{dplyr-library}}
+
+Inside the \textbf{tidyverse} library is the dplyr library which is helpful when creating new variables, renaming or reordering observations, selecting specific observations and calculating summary statistics among many other functions.
+
+The dataset for this section will be the Indian Census (2011), dataset is available \href{https://github.com/nishusharma1608/India-Census-2011-Analysis/blob/master/india-districts-census-2011.csv}{here}, \emph{Remember to click on `raw' data format first to load in data, you should see white background and black text CSV data, copy the url link in order to read in the data}.
+
+The tidyverse library brings along other libraries and when you load tidyverse you will a bunch of warnings in the console, these are no concern to you, basically telling you that one library hides another for function use. To turn off warnings in your Rmd file, inside the code chunk \{r\} set warning to false \texttt{\{r,\ warning=\ FALSE,\ message=\ FALSE\}}.
+s
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# step 1 {-} install tidyverse library}
+\CommentTok{\# install.packages(\textquotesingle{}tidyverse\textquotesingle{})  \# comment{-}out to run }
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\CommentTok{\# read in the data}
+\NormalTok{india\_census }\OtherTok{=} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}https://raw.githubusercontent.com/nishusharma1608/India{-}Census{-}2011{-}Analysis/master/india{-}districts{-}census{-}2011.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{section-2}{%
+\section{section 2}\label{section-2}}
 
 \hypertarget{parts}{%
 \chapter{Parts}\label{parts}}
