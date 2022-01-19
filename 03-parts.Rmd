@@ -225,7 +225,7 @@ Usually spatial data comes as a **raster** or as a **polygon** format. We usuall
 Or we have lat-Lon data that we can transform into an sf object as we did before. 
 We can also get raster files such as climate raster files or remote sensing data, land use, etc. Most of the times we want to plot all this info together (raster + one or more shape-files). 
 
-```{r}
+```{}
 require(rgdal)
 require(raster) #Package to work with raster files
 require(sf) #Package to work with shape files
