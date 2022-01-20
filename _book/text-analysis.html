@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 6 Text Analysis | RLadies Knowledge</title>
+<meta name="author" content="Zane Dax">
+<meta name="description" content="6.1 Text Mining This section is from RLadies Freiburg Kyla McConnell &amp; Julia Müller. The source of the material is Text Mining with R by Julia Silge &amp; David Robson. The libraries needed for this...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 6 Text Analysis | RLadies Knowledge">
+<meta property="og:type" content="book">
+<meta property="og:description" content="6.1 Text Mining This section is from RLadies Freiburg Kyla McConnell &amp; Julia Müller. The source of the material is Text Mining with R by Julia Silge &amp; David Robson. The libraries needed for this...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 6 Text Analysis | RLadies Knowledge">
+<meta name="twitter:description" content="6.1 Text Mining This section is from RLadies Freiburg Kyla McConnell &amp; Julia Müller. The source of the material is Text Mining with R by Julia Silge &amp; David Robson. The libraries needed for this...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="bs4_style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RLadies Knowledge</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="hello-rladies.html"><span class="header-section-number">2</span> Hello RLadies</a></li>
+<li><a class="" href="tidyverse.html"><span class="header-section-number">3</span> Tidyverse</a></li>
+<li><a class="" href="geo-data.html"><span class="header-section-number">4</span> Geo Data</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">5</span> Regression</a></li>
+<li><a class="active" href="text-analysis.html"><span class="header-section-number">6</span> Text Analysis</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/PythonCoderUnicorn/bookdown2">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="text-analysis" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> Text Analysis<a class="anchor" aria-label="anchor" href="#text-analysis"><i class="fas fa-link"></i></a>
+</h1>
+<div id="text-mining" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Text Mining<a class="anchor" aria-label="anchor" href="#text-mining"><i class="fas fa-link"></i></a>
+</h2>
+<p>This section is from <strong>RLadies Freiburg</strong> Kyla McConnell &amp; Julia Müller. The source of the material is <em>Text Mining with R</em> by Julia Silge &amp; David Robson.</p>
+<p>The libraries needed for this tutorial</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>  <span class="co"># for various data manipulation tasks</span>
+<span class="co">#&gt; ── Attaching packages ─────────────────── tidyverse 1.3.1 ──</span>
+<span class="co">#&gt; ✓ ggplot2 3.3.5     ✓ purrr   0.3.4</span>
+<span class="co">#&gt; ✓ tibble  3.1.6     ✓ dplyr   1.0.7</span>
+<span class="co">#&gt; ✓ tidyr   1.1.4     ✓ stringr 1.4.0</span>
+<span class="co">#&gt; ✓ readr   2.1.1     ✓ forcats 0.5.1</span>
+<span class="co">#&gt; ── Conflicts ────────────────────── tidyverse_conflicts() ──</span>
+<span class="co">#&gt; x dplyr::filter() masks stats::filter()</span>
+<span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/juliasilge/tidytext">tidytext</a></span><span class="op">)</span>   <span class="co"># for text mining specifically, main package in book</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>    <span class="co"># for various text operations</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/gutenbergr/">gutenbergr</a></span><span class="op">)</span> <span class="co"># to access full-text books that are in the public domain</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span>     <span class="co"># for visualizing percentages</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'scales'</span>
+<span class="co">#&gt; The following object is masked from 'package:purrr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     discard</span>
+<span class="co">#&gt; The following object is masked from 'package:readr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     col_factor</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/quanteda/readtext">readtext</a></span><span class="op">)</span>   <span class="co"># for reading in txt files</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://blog.fellstat.com/?cat=11">wordcloud</a></span><span class="op">)</span>  <span class="co"># for creating wordclouds</span>
+<span class="co">#&gt; Loading required package: RColorBrewer</span></code></pre></div>
+<div id="reading-in-texts" class="section level3" number="6.1.1">
+<h3>
+<span class="header-section-number">6.1.1</span> Reading in texts<a class="anchor" aria-label="anchor" href="#reading-in-texts"><i class="fas fa-link"></i></a>
+</h3>
+<p>Here’s how you can read in one .txt file that is saved in the same location as this script (i.e. in the same folder on your computer):</p>
+<pre><code>hf &lt;- readtext("Adventures of Huckleberry Finn.txt")</code></pre>
+<p>If you want to read all files from a sub-folder, type the name of the folder followed by / and * to ask R to read in all files in that folder:</p>
+<pre><code>shakes &lt;- readtext("Shakespeare txts/*")
+shakes$doc_id &lt;- sub(".txt", "", shakes$doc_id) # this gets rid of .txt in the play titles</code></pre>
+</div>
+<div id="book-data-from-project-gutenberg" class="section level3" number="6.1.2">
+<h3>
+<span class="header-section-number">6.1.2</span> Book data from Project Gutenberg<a class="anchor" aria-label="anchor" href="#book-data-from-project-gutenberg"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Project Gutenberg: free downloads of books in the public domain (i.e. lots of classic literature)</li>
+<li>Currently in a legal battle in Germany -* impossible to download via the website</li>
+<li>Still accessible via the R package gutenbergr by ID</li>
+<li>Top 100 books for inspiration (changes daily based on demand): <a href="https://www.gutenberg.org/browse/scores/top" class="uri">https://www.gutenberg.org/browse/scores/top</a>
+</li>
+<li>Catalog: <a href="https://www.gutenberg.org/catalog/" class="uri">https://www.gutenberg.org/catalog/</a>
+</li>
+</ul>
+<p>To find the id of a book (some have multiple copies):</p>
+<pre><code>gutenberg_metadata %&gt;%
+  filter(title %in% c("Alice's Adventures in Wonderland", "Grimms' Fairy Tales", "Andersen's Fairy Tales"))</code></pre>
+<p>Can also search by author name:</p>
+<pre><code>gutenberg_works(author == "Carroll, Lewis")
+gutenberg_works(str_detect(author, "Carroll")) #if you only have a partial name</code></pre>
+<p>For more Gutenberg search options: <a href="https://ropensci.org/tutorials/gutenbergr_tutorial/" class="uri">https://ropensci.org/tutorials/gutenbergr_tutorial/</a></p>
+<p>Once you found your books, download with gutenberg_download:</p>
+<pre><code>fairytales_raw &lt;- gutenberg_download(c(11, 2591, 1597))
+fairytales_raw</code></pre>
+<p>11: Alice’s Adventures in Wonderland
+2591: Grimm’s Fairytales
+1597: Hans Christian Anderson’s Fairytales</p>
+</div>
+<div id="preparing-data" class="section level3" number="6.1.3">
+<h3>
+<span class="header-section-number">6.1.3</span> Preparing data<a class="anchor" aria-label="anchor" href="#preparing-data"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>convert Gutenberg ID to a factor and replacing the ID numbers with more descriptive labels</li>
+</ul>
+<pre><code>fairytales_raw$gutenberg_id &lt;- as.factor(fairytales_raw$gutenberg_id)
+fairytales_raw$gutenberg_id &lt;- plyr::revalue(fairytales_raw$gutenberg_id,
+                                              c("11" = "Alice's Adventures in Wonderland",
+                                                "2591" = "Grimm's Fairytales",
+                                                "1597" = "Hans Christian Anderson's Fairytales"))</code></pre>
+</div>
+</div>
+<div id="tidy-text" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Tidy text<a class="anchor" aria-label="anchor" href="#tidy-text"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>One word per row, facilitates analysis</li>
+<li>Token: “a meaningful unit of text, most often a word, that we are interested in using for further analysis”</li>
+</ul>
+<div id="the-unnest_tokens-function" class="section level3" number="6.2.1">
+<h3>
+<span class="header-section-number">6.2.1</span> the unnest_tokens function<a class="anchor" aria-label="anchor" href="#the-unnest_tokens-function"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Easy to convert from full text to token per row with unnest_tokens()
+Syntax: unnest_tokens(df, newcol, oldcol)</li>
+<li>unnest_tokens() automatically removes punctuation and converts to lowercase (unless you set to_lower = FALSE)</li>
+<li>by default, tokens are set to words, but you can also use token = “characters,” “ngrams,” “sentences,” “lines,” “regex,” “paragraphs,” and even “tweets” (which will retain usernames, hashtags, and URLs)</li>
+</ul>
+<pre><code>fairytales_tidy &lt;- fairytales_raw %&gt;% 
+  unnest_tokens(word, text)
+# this keeps the information on which sentence the words came from
+fairytales_raw %&gt;% 
+  unnest_tokens(sentence, text, token = "sentences") %&gt;% 
+  mutate(sent_nr = row_number()) %&gt;% 
+  unnest_tokens(word, sentence)
+fairytales_tidy
+shakes_unnest &lt;- shakes %&gt;% 
+  unnest_tokens(word, text)</code></pre>
+</div>
+<div id="removing-non-alphanumeric-characters" class="section level3" number="6.2.2">
+<h3>
+<span class="header-section-number">6.2.2</span> Removing non-alphanumeric characters<a class="anchor" aria-label="anchor" href="#removing-non-alphanumeric-characters"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Project Gutenberg data sometimes contains underscores to indicate italics</li>
+<li>str_extract is used to get rid of non-alphanumeric characters (because we don’t want to count <em>word</em> separately from word)</li>
+</ul>
+<pre><code>fairytales_tidy &lt;- fairytales_tidy %&gt;% 
+  mutate(word = str_extract(word, "[a-z']+"))
+shakes_unnest &lt;- shakes_unnest %&gt;% 
+  mutate(word = str_extract(word, "[a-z']+"))</code></pre>
+</div>
+<div id="stop-words" class="section level3" number="6.2.3">
+<h3>
+<span class="header-section-number">6.2.3</span> Stop words<a class="anchor" aria-label="anchor" href="#stop-words"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Stop words: very common, “meaningless” function words like “the,” “of” and “to” – not usually important in an analysis (i.e. to find out that the most common word in two books you are comparing is “the”)</li>
+<li>tidytext has a built-in df called stop_words for English</li>
+<li>remove these from your dataset with anti_join</li>
+</ul>
+<p>We can take a look:</p>
+<pre><code>stop_words</code></pre>
+<pre><code>fairytales_tidy &lt;- fairytales_tidy %&gt;% 
+  anti_join(stop_words)
+fairytales_tidy</code></pre>
+<p>Define other stop words:</p>
+<pre><code>meaningless_words &lt;- tibble(word = c("von", "der", "thy", "thee", "thou"))
+fairytales_tidy &lt;- fairytales_tidy %&gt;% 
+  anti_join(meaningless_words)</code></pre>
+<p>This could also be used to remove character names, for example.</p>
+<p>The stopwords package also contains lists of stopwords for other languages, so to get a list of German stopwords, you could use:</p>
+<pre><code><a href="https://github.com/quanteda/stopwords">library(stopwords)
+stop_german &lt;- data.frame(word = stopwords::stopwords("de"), stringsAsFactors = FALSE)</a></code></pre>
+<p>More info: <a href="https://cran.r-project.org/web/packages/stopwords/readme/README.html" class="uri">https://cran.r-project.org/web/packages/stopwords/readme/README.html</a></p>
+<p>Break: Prepare your data with the steps above. 1) Unnest tokens, 2) Remove alpha-numeric characters, 3) Remove stopwords</p>
+</div>
+</div>
+<div id="analysing-frequencies" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Analysing frequencies<a class="anchor" aria-label="anchor" href="#analysing-frequencies"><i class="fas fa-link"></i></a>
+</h2>
+<div id="find-most-frequent-words" class="section level3" number="6.3.1">
+<h3>
+<span class="header-section-number">6.3.1</span> Find most frequent words<a class="anchor" aria-label="anchor" href="#find-most-frequent-words"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Easily find frequent words using count()</li>
+<li>Data must be in tidy format (one token per line)</li>
+<li>sort = TRUE to show the most frequent words first</li>
+</ul>
+<p>tidy_books %&gt;%
+count(word, sort = TRUE)</p>
+<pre><code>fairytales_freq &lt;- fairytales_tidy %&gt;% 
+  group_by(gutenberg_id) %&gt;% #including this ensures that the counts are by book and the id column is retained
+  count(word, sort=TRUE)
+fairytales_freq
+shakes_freq &lt;- shakes_unnest %&gt;% 
+  group_by(doc_id) %&gt;% 
+  count(word, sort = TRUE)</code></pre>
+<p>Reminder: filter can be used to look at subsets of the data, i.e. one book, all words with freq above 100, etc. (Note here that I don’t save this output)</p>
+<pre><code>fairytales_tidy %&gt;% 
+  group_by(gutenberg_id) %&gt;% 
+  count(word, sort=TRUE) %&gt;% 
+  filter(gutenberg_id == "Grimm's Fairytales")</code></pre>
+<div id="plotting-word-frequencies---bar-graphs" class="section level4" number="6.3.1.1">
+<h4>
+<span class="header-section-number">6.3.1.1</span> Plotting word frequencies - bar graphs<a class="anchor" aria-label="anchor" href="#plotting-word-frequencies---bar-graphs"><i class="fas fa-link"></i></a>
+</h4>
+<p>Bar graph of top words in Grimm’s fairytales.</p>
+<p>Basic graph:</p>
+<pre><code>fairytales_freq %&gt;% 
+  filter(n&gt;90 &amp; gutenberg_id == "Grimm's Fairytales") %&gt;% 
+  ggplot(aes(x=word, y=n)) +
+  geom_col()</code></pre>
+<p>Readable labels:</p>
+<pre><code>fairytales_freq %&gt;% 
+  filter(n&gt;90 &amp; gutenberg_id == "Grimm's Fairytales") %&gt;% 
+  ggplot(aes(x=word, y=n)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p>Descending order:</p>
+<pre><code>fairytales_freq %&gt;% 
+  filter(n&gt;90 &amp; gutenberg_id == "Grimm's Fairytales") %&gt;% 
+  ggplot(aes(x=reorder(word, -n), y=n)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p>Axis names and colors:</p>
+<pre><code>fairytales_freq %&gt;% 
+  filter(n&gt;90 &amp; gutenberg_id == "Grimm's Fairytales") %&gt;% 
+  ggplot(aes(x=reorder(word, -n), y=n, fill=n)) +
+  geom_col(show.legend=FALSE) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  xlab("Word") +
+  ylab("Frequency") +
+  ggtitle("Most frequent words in Grimm's Fairytales")</code></pre>
+<p>Or: flip coordinate system to make more space for words</p>
+<pre><code>fairytales_freq %&gt;% 
+  filter(n&gt;90 &amp; gutenberg_id == "Grimm's Fairytales") %&gt;% 
+  ggplot(aes(x=reorder(word, n), y=n, fill=n)) +
+  geom_col(show.legend=FALSE) +
+  xlab("Word") +
+  ylab("Frequency") +
+  ggtitle("Most frequent words in Grimm's Fairytales") +
+  coord_flip()</code></pre>
+</div>
+</div>
+<div id="normalised-frequency" class="section level3" number="6.3.2">
+<h3>
+<span class="header-section-number">6.3.2</span> Normalised frequency<a class="anchor" aria-label="anchor" href="#normalised-frequency"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>when comparing the frequencies of words from different texts, they are commonly normalised</li>
+<li>convention in corpus linguistics: report the frequency per 1 million words</li>
+<li>for shorter texts: per 10,000 or per 100,000 words</li>
+<li>calculation: raw frequency * 1,000,000 / total numbers in text</li>
+</ul>
+<pre><code># see the total number of words per play (doc_id)
+shakes_freq %&gt;% 
+  group_by(doc_id) %&gt;% 
+  mutate(sum(n)) %&gt;% 
+  distinct(doc_id, sum(n))
+shakes_freq &lt;- shakes_freq %&gt;% 
+  na.omit() %&gt;% 
+  group_by(doc_id) %&gt;% 
+  mutate(pmw = n*1000000/sum(n)) %&gt;% # creates a new column called pmw
+  ungroup() %&gt;% 
+  anti_join(stop_words) # removing stopwords afterwards
+shakes_freq %&gt;% select(word, pmw)</code></pre>
+<div id="plotting-normalised-frequency" class="section level4" number="6.3.2.1">
+<h4>
+<span class="header-section-number">6.3.2.1</span> Plotting normalised frequency<a class="anchor" aria-label="anchor" href="#plotting-normalised-frequency"><i class="fas fa-link"></i></a>
+</h4>
+<p>Now we can plot, for example, the 20 most frequent words (by pmw).</p>
+<pre><code>shakes_freq %&gt;% 
+  filter(doc_id == "Othello") %&gt;% 
+  top_n(20, pmw) %&gt;% 
+  ggplot(aes(x=reorder(word, -pmw), y=pmw, fill=pmw)) +
+  geom_col(show.legend=FALSE) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  xlab("Word") +
+  ylab("Frequency per 1 million words") +
+  ggtitle("Most frequent words in Othello")</code></pre>
+<p>Break: Gather frequency counts for your text, normalize them, and create a bar chart of most the normalized frequencies.</p>
+</div>
+</div>
+<div id="word-clouds" class="section level3" number="6.3.3">
+<h3>
+<span class="header-section-number">6.3.3</span> Word clouds<a class="anchor" aria-label="anchor" href="#word-clouds"><i class="fas fa-link"></i></a>
+</h3>
+<p>Let’s visualise the most frequent words in a word cloud. Here, the size indicates the frequency, with words that occur more often being displayed in a larger font size, but this can also be used to visualise e.g. normalised frequency (pmw) or length or anything else you pass to the freq = part of the command.</p>
+<pre><code>wordcloud(words = shakes_freq$word, freq = shakes_freq$n, 
+          min.freq = 150, max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))</code></pre>
+</div>
+</div>
+<div id="comparing-the-vocabulary-of-texts" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Comparing the vocabulary of texts<a class="anchor" aria-label="anchor" href="#comparing-the-vocabulary-of-texts"><i class="fas fa-link"></i></a>
+</h2>
+<p>Next, we’ll create two graphs to compare the vocabulary of our texts. First, we focus on Alice’s Adventures and Anderson’s Fairytales. The newly created comp_2 data frame contains only the words and their frequencies in the two texts in two separate columns.</p>
+<div id="comparing-two-texts" class="section level3" number="6.4.1">
+<h3>
+<span class="header-section-number">6.4.1</span> Comparing two texts<a class="anchor" aria-label="anchor" href="#comparing-two-texts"><i class="fas fa-link"></i></a>
+</h3>
+<pre><code>comp_2 &lt;- fairytales_freq %&gt;% 
+  filter(gutenberg_id == "Alice's Adventures in Wonderland"|gutenberg_id == "Hans Christian Anderson's Fairytales") %&gt;% 
+  group_by(gutenberg_id) %&gt;% 
+  mutate(proportion = n / sum(n)) %&gt;% #creates proportion column (word frequency divided by overall frequency per author)
+  select(-n) %&gt;%
+  spread(gutenberg_id, proportion)
+head(comp_2)</code></pre>
+<p>Now, we can plot the words. Their placement depends on the word frequencies. Additionally, colour coding shows how different the frequencies are - darker items are more similar in terms of their frequencies, lighter-coloured ones more frequent in one text compared to the other. We’ll discuss the interpretation in more detail once we’ve created the threeway comparison.</p>
+<pre><code>ggplot(comp_2, 
+       aes(x = `Alice's Adventures in Wonderland`, y = `Hans Christian Anderson's Fairytales`, 
+           color = abs(`Alice's Adventures in Wonderland` - `Hans Christian Anderson's Fairytales`))) +
+  geom_abline(color = "gray40", lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  theme_light() +
+  theme(legend.position="none") +
+  labs(y = "Hans Christian Anderson's Fairytales", x = "Alice's Adventures in Wonderland")</code></pre>
+</div>
+<div id="comparing-three-texts" class="section level3" number="6.4.2">
+<h3>
+<span class="header-section-number">6.4.2</span> Comparing three texts<a class="anchor" aria-label="anchor" href="#comparing-three-texts"><i class="fas fa-link"></i></a>
+</h3>
+<p>In order to compare three texts, we need to add one step to the data preparation: Grimm’s Fairytales will be the text that the other two will be compared to, so its word frequencies will be contained in the Grimm’s Fairytales column. The gutenberg_id column contains both Alice’s Adventures and Anderson’s Fairytales so we can pass this column to the facet_wrap command and create two graphs.</p>
+<pre><code>comp_3 &lt;- fairytales_freq %&gt;% 
+  group_by(gutenberg_id) %&gt;% 
+  mutate(proportion = n / sum(n)) %&gt;% #creates proportion column (word frequency divided by overall frequency per author)
+  select(-n) %&gt;% 
+  spread(gutenberg_id, proportion) %&gt;% 
+  gather(gutenberg_id, proportion, "Alice's Adventures in Wonderland":"Hans Christian Anderson's Fairytales") # only done for plotting
+head(comp_3); unique(comp_3$gutenberg_id)</code></pre>
+<p>The ggplot command is very similar to the one used above but facet_wrap is added to create two comparisons - Grimm’s Fairytales compared to Alice’s Adventures (left graph) and Grimm’s compared to Anderson’s fairytales (right graph):</p>
+<pre><code>ggplot(comp_3, 
+       aes(x = proportion, y = `Grimm's Fairytales`, 
+           color = abs(`Grimm's Fairytales` - proportion))) +
+  geom_abline(color = "gray40", lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  theme_light() +
+  facet_wrap(~ gutenberg_id, ncol = 2) +
+  theme(legend.position="none") +
+  labs(y = "Grimm's Fairytales", x = NULL)</code></pre>
+</div>
+<div id="interpretation" class="section level3" number="6.4.3">
+<h3>
+<span class="header-section-number">6.4.3</span> Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"><i class="fas fa-link"></i></a>
+</h3>
+<p>Words that are close to the diagonal line have similar frequencies in both texts (e.g. king, cook, calling in the left graph). Words that are far from the line are more frequent in one of the two texts (e.g. wife or son are more frequent for Grimm compared to Alice, while turtle and hare are more frequent in Alice than in Grimm). Again, this is also indicated by the colour.<br>
+Generally, if the words are closer to the line and there’s a smaller gap for low frequencies, the vocabulary of the texts overall is more similar. In our case, the two fairytale sources contain more of the same words than Grimm compared to Alice.<br>
+An additional step in an analysis of word frequencies and something we won’t cover today is to calculate correlations of word frequencies to quantify how similar the vocabularies of texts are.</p>
+</div>
+</div>
+<div id="word-and-document-frequencies" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> Word and document frequencies<a class="anchor" aria-label="anchor" href="#word-and-document-frequencies"><i class="fas fa-link"></i></a>
+</h2>
+<div id="tf-idf" class="section level3" number="6.5.1">
+<h3>
+<span class="header-section-number">6.5.1</span> tf-idf<a class="anchor" aria-label="anchor" href="#tf-idf"><i class="fas fa-link"></i></a>
+</h3>
+<p>How can we quantify what a text/document is about? We could analyse the term frequency (tf) - how often does a term occur in a text/document. However, common words are the same in most texts, e.g. grammatical words like articles. A solution would be to instead analyse the inverse document frequency (idf) which lowers the importance of frequent words and raises the importance of rare words in documents. So it’s a measure of how important a word is to a text compared to how important it is in the collection of texts.</p>
+<div id="the-bind_tf_idf-function" class="section level4" number="6.5.1.1">
+<h4>
+<span class="header-section-number">6.5.1.1</span> The bind_tf_idf-function<a class="anchor" aria-label="anchor" href="#the-bind_tf_idf-function"><i class="fas fa-link"></i></a>
+</h4>
+<ul>
+<li>input: format needs to be one row per token (term), per document</li>
+<li>one column (here: word) contains the terms/tokens</li>
+<li>one column (here: gutenberg_id) contains the documents</li>
+</ul>
+<pre><code>fairytales_idf &lt;- fairytales_freq %&gt;% 
+  bind_tf_idf(word, gutenberg_id, n)
+fairytales_idf %&gt;%
+  select(gutenberg_id, word, tf_idf) %&gt;% 
+  arrange(desc(tf_idf))</code></pre>
+<p>interpretation:</p>
+<ul>
+<li>low tf_idf if words appear in many books, high if they occur in few books<br>
+</li>
+<li>characteristic words for documents<br>
+</li>
+<li>so unsurprisingly, in our data, the first hits with the highest tf_idf are character names</li>
+</ul>
+</div>
+<div id="characteristic-words-per-book" class="section level4" number="6.5.1.2">
+<h4>
+<span class="header-section-number">6.5.1.2</span> Characteristic words per book<a class="anchor" aria-label="anchor" href="#characteristic-words-per-book"><i class="fas fa-link"></i></a>
+</h4>
+<p>visualisation of the top 20 tf-idf words per book:</p>
+<pre><code>fairytales_idf$word &lt;- as.factor(fairytales_idf$word)
+fairytales_idf %&gt;%
+  group_by(gutenberg_id) %&gt;% 
+  arrange(desc(tf_idf)) %&gt;% 
+  top_n(20, tf_idf) %&gt;% 
+  ggplot(aes(x = reorder(word, tf_idf), y = tf_idf, fill = gutenberg_id)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = "tf-idf") +
+  facet_wrap(~gutenberg_id, scales = "free") +
+  coord_flip()</code></pre>
+</div>
+<div id="characteristic-words-per-chapter" class="section level4" number="6.5.1.3">
+<h4>
+<span class="header-section-number">6.5.1.3</span> Characteristic words per chapter<a class="anchor" aria-label="anchor" href="#characteristic-words-per-chapter"><i class="fas fa-link"></i></a>
+</h4>
+<p>tf_idf can also be used to find characteristic words per chapter, or any other text unit. We’ll only use “Alice in Wonderland” as an example since it consists of several chapters.<br>
+We first need to create a column that contains the chapter the word came from. The code below:</p>
+<ul>
+<li>finds “chapter” followed by a Roman numeral by using a regular expression regex(“^chapter [\divclx]” in the str_detect() command<br>
+</li>
+<li>extracts the chapter number by counting how often this regex is found with cumsum(). This is basically a counter that starts at 0 if the regex isn’t matched, then counts up by one every time chapter + Roman numeral is found in the text<br>
+</li>
+<li>write it to a new column called “chapter”<br>
+</li>
+<li>also preserves the original line numbers (optional)<br>
+We then remove the gutenberg_id column, words from chapter 0, i.e. the title and information on the edition, unnest tokens, and remove stopwords.<br>
+</li>
+</ul>
+<pre><code>alice &lt;- fairytales_raw %&gt;% 
+  filter(gutenberg_id == "Alice's Adventures in Wonderland") %&gt;% 
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex("^chapter [\\divclx]",
+                                                 ignore_case = TRUE)))) %&gt;%
+  select(-gutenberg_id) %&gt;% 
+  filter(chapter != 0) %&gt;% 
+  mutate(chapter = as_factor(chapter)) %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  anti_join(stop_words)
+head(alice); summary(alice$chapter)</code></pre>
+<p>Now let’s calculate the tf-idf per chapter:</p>
+<ul>
+<li>first step is to calculate the frequency for each word per chapter</li>
+<li>then apply bind_tf_idf function</li>
+<li>show words with the highest tf_idf</li>
+</ul>
+<pre><code>alice &lt;- alice %&gt;% 
+  group_by(chapter) %&gt;% 
+  count(word, sort = TRUE)
+alice_idf &lt;- alice %&gt;% 
+  bind_tf_idf(word, chapter, n)
+alice_idf %&gt;%
+  select(chapter, word, tf_idf) %&gt;% 
+  arrange(desc(tf_idf))</code></pre>
+<p>Again, we can visualise the most characteristic words, this time per chapter:</p>
+<pre><code>alice_idf %&gt;%
+  group_by(chapter) %&gt;% 
+  arrange(desc(tf_idf)) %&gt;% 
+  top_n(5, tf_idf) %&gt;% 
+  ggplot(aes(reorder(word, tf_idf), tf_idf, fill = chapter)) +
+  geom_col(show.legend = FALSE) +
+  theme_light() +
+  labs(x = NULL, y = "tf-idf") +
+  facet_wrap(~ chapter, scales = "free") +
+  coord_flip()</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="regression.html"><span class="header-section-number">5</span> Regression</a></div>
+<div class="next"><a href="references.html">References</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#text-analysis"><span class="header-section-number">6</span> Text Analysis</a></li>
+<li>
+<a class="nav-link" href="#text-mining"><span class="header-section-number">6.1</span> Text Mining</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#reading-in-texts"><span class="header-section-number">6.1.1</span> Reading in texts</a></li>
+<li><a class="nav-link" href="#book-data-from-project-gutenberg"><span class="header-section-number">6.1.2</span> Book data from Project Gutenberg</a></li>
+<li><a class="nav-link" href="#preparing-data"><span class="header-section-number">6.1.3</span> Preparing data</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#tidy-text"><span class="header-section-number">6.2</span> Tidy text</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#the-unnest_tokens-function"><span class="header-section-number">6.2.1</span> the unnest_tokens function</a></li>
+<li><a class="nav-link" href="#removing-non-alphanumeric-characters"><span class="header-section-number">6.2.2</span> Removing non-alphanumeric characters</a></li>
+<li><a class="nav-link" href="#stop-words"><span class="header-section-number">6.2.3</span> Stop words</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#analysing-frequencies"><span class="header-section-number">6.3</span> Analysing frequencies</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#find-most-frequent-words"><span class="header-section-number">6.3.1</span> Find most frequent words</a></li>
+<li><a class="nav-link" href="#normalised-frequency"><span class="header-section-number">6.3.2</span> Normalised frequency</a></li>
+<li><a class="nav-link" href="#word-clouds"><span class="header-section-number">6.3.3</span> Word clouds</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#comparing-the-vocabulary-of-texts"><span class="header-section-number">6.4</span> Comparing the vocabulary of texts</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#comparing-two-texts"><span class="header-section-number">6.4.1</span> Comparing two texts</a></li>
+<li><a class="nav-link" href="#comparing-three-texts"><span class="header-section-number">6.4.2</span> Comparing three texts</a></li>
+<li><a class="nav-link" href="#interpretation"><span class="header-section-number">6.4.3</span> Interpretation</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#word-and-document-frequencies"><span class="header-section-number">6.5</span> Word and document frequencies</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#tf-idf"><span class="header-section-number">6.5.1</span> tf-idf</a></li></ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/PythonCoderUnicorn/bookdown2/blob/master/05-text-analysis.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/PythonCoderUnicorn/bookdown2/edit/master/05-text-analysis.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RLadies Knowledge</strong>" was written by Zane Dax. It was last built on 2022-01-20.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
