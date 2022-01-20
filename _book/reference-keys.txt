@@ -40,7 +40,11 @@ crop-the-raster-to-the-shape-file-extent
 plot-with-tmap
 regression
 linear-regression-models
-citations
+try-some-models
+independence-of-the-data
+visualization-of-the-data
+ploting-the-data-in-a-map
+where-is-the-model-working-better
 blocks
 equations
 theorems-and-proofs

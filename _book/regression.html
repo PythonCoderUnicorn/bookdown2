@@ -188,12 +188,583 @@
 </tbody>
 </table></div>
 <p>The question is, <em>what parameters are there? What questions can we address using these factors.?</em> <em>Does trust in government a variable?</em></p>
-</div>
-<div id="citations" class="section level2" number="5.2">
-<h2>
-<span class="header-section-number">5.2</span> Citations<a class="anchor" aria-label="anchor" href="#citations"><i class="fas fa-link"></i></a>
-</h2>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">happiness_2016</span><span class="op">$</span><span class="va">Happiness.Score</span>, <span class="va">happiness_2016</span><span class="op">$</span><span class="va">Trust..Government.Corruption.</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="04-regression_files/figure-html/pressure-1.png" width="672"></div>
+<div id="try-some-models" class="section level3" number="5.1.1">
+<h3>
+<span class="header-section-number">5.1.1</span> try some models<a class="anchor" aria-label="anchor" href="#try-some-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>There are 3 questions we could ask:
+- Does Corruption within the government predict happiness of its citizens?
+- How can we add Freedom as a predictor to the model?
+- What is the difference between adding factors and looking at their interactions?</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## ANSWERS</span>
+<span class="co">#fit our regression model</span>
+<span class="va">RegressionModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Trust..Government.Corruption.</span>, <span class="co"># regression formula</span>
+              data<span class="op">=</span><span class="va">happiness_2016</span><span class="op">)</span> <span class="co"># data set</span>
 
+<span class="co"># Summarize and print the results</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">RegressionModel</span><span class="op">)</span> <span class="co"># show regression coefficients table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = Happiness.Score ~ Trust..Government.Corruption., </span>
+<span class="co">#&gt;     data = happiness_2016)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -3.3867 -0.7337  0.0653  0.8163  2.0929 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                               Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                     4.8133     0.1335  36.042</span>
+<span class="co">#&gt; Trust..Government.Corruption.   4.1336     0.7562   5.466</span>
+<span class="co">#&gt;                               Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)                    &lt; 2e-16 ***</span>
+<span class="co">#&gt; Trust..Government.Corruption.  1.8e-07 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 1.049 on 155 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.1616, Adjusted R-squared:  0.1562 </span>
+<span class="co">#&gt; F-statistic: 29.88 on 1 and 155 DF,  p-value: 1.798e-07</span>
+
+
+<span class="va">RegressionModel2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Trust..Government.Corruption.</span> <span class="op">+</span> <span class="va">Freedom</span>,
+                      data<span class="op">=</span><span class="va">happiness_2016</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">RegressionModel2</span><span class="op">)</span> 
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = Happiness.Score ~ Trust..Government.Corruption. + </span>
+<span class="co">#&gt;     Freedom, data = happiness_2016)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -3.12005 -0.75060  0.08456  0.70370  1.99165 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                               Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                     3.7395     0.2047  18.270</span>
+<span class="co">#&gt; Trust..Government.Corruption.   1.6146     0.7785   2.074</span>
+<span class="co">#&gt; Freedom                         3.8288     0.5940   6.445</span>
+<span class="co">#&gt;                               Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)                    &lt; 2e-16 ***</span>
+<span class="co">#&gt; Trust..Government.Corruption.   0.0397 *  </span>
+<span class="co">#&gt; Freedom                       1.41e-09 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 0.9337 on 154 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.3397, Adjusted R-squared:  0.3312 </span>
+<span class="co">#&gt; F-statistic: 39.62 on 2 and 154 DF,  p-value: 1.313e-14</span>
+
+
+<span class="va">RegressionModel3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Trust..Government.Corruption.</span> <span class="op">*</span> <span class="va">Freedom</span>, 
+                       data<span class="op">=</span><span class="va">happiness_2016</span><span class="op">)</span> 
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">RegressionModel3</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = Happiness.Score ~ Trust..Government.Corruption. * </span>
+<span class="co">#&gt;     Freedom, data = happiness_2016)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -3.4328 -0.6808  0.1590  0.6513  2.0290 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                                       Estimate Std. Error</span>
+<span class="co">#&gt; (Intercept)                             4.6015     0.3507</span>
+<span class="co">#&gt; Trust..Government.Corruption.          -7.0035     2.9817</span>
+<span class="co">#&gt; Freedom                                 1.8776     0.8728</span>
+<span class="co">#&gt; Trust..Government.Corruption.:Freedom  17.7259     5.9306</span>
+<span class="co">#&gt;                                       t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)                            13.119  &lt; 2e-16 ***</span>
+<span class="co">#&gt; Trust..Government.Corruption.          -2.349  0.02011 *  </span>
+<span class="co">#&gt; Freedom                                 2.151  0.03303 *  </span>
+<span class="co">#&gt; Trust..Government.Corruption.:Freedom   2.989  0.00326 ** </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 0.9105 on 153 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.3762, Adjusted R-squared:  0.3639 </span>
+<span class="co">#&gt; F-statistic: 30.75 on 3 and 153 DF,  p-value: 1.293e-15</span></code></pre></div>
+<p>There are a number of different Parametric and non-parametric tests we can try in the same format. Instead of lm, we could use t.test(), aov(), wilcox.test(), kruskal.test().</p>
+<p>Is there a categorical variable we can use to run an ANOVA on?</p>
+<p><em>How does the happiness quotient differ based on regions?</em></p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Region</span>, 
+             data<span class="op">=</span><span class="va">happiness_2016</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ANOVA</span><span class="op">)</span> 
+<span class="co">#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)    </span>
+<span class="co">#&gt; Region        9 126.69  14.077      27 &lt;2e-16 ***</span>
+<span class="co">#&gt; Residuals   147  76.64   0.521                   </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">ANOVA</span><span class="op">)</span>
+<span class="co">#&gt;   Tukey multiple comparisons of means</span>
+<span class="co">#&gt;     95% family-wise confidence level</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Fit: aov(formula = Happiness.Score ~ Region, data = happiness_2016)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Region</span>
+<span class="co">#&gt;                                                                    diff</span>
+<span class="co">#&gt; Central and Eastern Europe-Australia and New Zealand        -1.95281034</span>
+<span class="co">#&gt; Eastern Asia-Australia and New Zealand                      -1.69933333</span>
+<span class="co">#&gt; Latin America and Caribbean-Australia and New Zealand       -1.22175000</span>
+<span class="co">#&gt; Middle East and Northern Africa-Australia and New Zealand   -1.93744737</span>
+<span class="co">#&gt; North America-Australia and New Zealand                     -0.06950000</span>
+<span class="co">#&gt; Southeastern Asia-Australia and New Zealand                 -1.98461111</span>
+<span class="co">#&gt; Southern Asia-Australia and New Zealand                     -2.76021429</span>
+<span class="co">#&gt; Sub-Saharan Africa-Australia and New Zealand                -3.18707895</span>
+<span class="co">#&gt; Western Europe-Australia and New Zealand                    -0.63783333</span>
+<span class="co">#&gt; Eastern Asia-Central and Eastern Europe                      0.25347701</span>
+<span class="co">#&gt; Latin America and Caribbean-Central and Eastern Europe       0.73106034</span>
+<span class="co">#&gt; Middle East and Northern Africa-Central and Eastern Europe   0.01536298</span>
+<span class="co">#&gt; North America-Central and Eastern Europe                     1.88331034</span>
+<span class="co">#&gt; Southeastern Asia-Central and Eastern Europe                -0.03180077</span>
+<span class="co">#&gt; Southern Asia-Central and Eastern Europe                    -0.80740394</span>
+<span class="co">#&gt; Sub-Saharan Africa-Central and Eastern Europe               -1.23426860</span>
+<span class="co">#&gt; Western Europe-Central and Eastern Europe                    1.31497701</span>
+<span class="co">#&gt; Latin America and Caribbean-Eastern Asia                     0.47758333</span>
+<span class="co">#&gt; Middle East and Northern Africa-Eastern Asia                -0.23811404</span>
+<span class="co">#&gt; North America-Eastern Asia                                   1.62983333</span>
+<span class="co">#&gt; Southeastern Asia-Eastern Asia                              -0.28527778</span>
+<span class="co">#&gt; Southern Asia-Eastern Asia                                  -1.06088095</span>
+<span class="co">#&gt; Sub-Saharan Africa-Eastern Asia                             -1.48774561</span>
+<span class="co">#&gt; Western Europe-Eastern Asia                                  1.06150000</span>
+<span class="co">#&gt; Middle East and Northern Africa-Latin America and Caribbean -0.71569737</span>
+<span class="co">#&gt; North America-Latin America and Caribbean                    1.15225000</span>
+<span class="co">#&gt; Southeastern Asia-Latin America and Caribbean               -0.76286111</span>
+<span class="co">#&gt; Southern Asia-Latin America and Caribbean                   -1.53846429</span>
+<span class="co">#&gt; Sub-Saharan Africa-Latin America and Caribbean              -1.96532895</span>
+<span class="co">#&gt; Western Europe-Latin America and Caribbean                   0.58391667</span>
+<span class="co">#&gt; North America-Middle East and Northern Africa                1.86794737</span>
+<span class="co">#&gt; Southeastern Asia-Middle East and Northern Africa           -0.04716374</span>
+<span class="co">#&gt; Southern Asia-Middle East and Northern Africa               -0.82276692</span>
+<span class="co">#&gt; Sub-Saharan Africa-Middle East and Northern Africa          -1.24963158</span>
+<span class="co">#&gt; Western Europe-Middle East and Northern Africa               1.29961404</span>
+<span class="co">#&gt; Southeastern Asia-North America                             -1.91511111</span>
+<span class="co">#&gt; Southern Asia-North America                                 -2.69071429</span>
+<span class="co">#&gt; Sub-Saharan Africa-North America                            -3.11757895</span>
+<span class="co">#&gt; Western Europe-North America                                -0.56833333</span>
+<span class="co">#&gt; Southern Asia-Southeastern Asia                             -0.77560317</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southeastern Asia                        -1.20246784</span>
+<span class="co">#&gt; Western Europe-Southeastern Asia                             1.34677778</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southern Asia                            -0.42686466</span>
+<span class="co">#&gt; Western Europe-Southern Asia                                 2.12238095</span>
+<span class="co">#&gt; Western Europe-Sub-Saharan Africa                            2.54924561</span>
+<span class="co">#&gt;                                                                     lwr</span>
+<span class="co">#&gt; Central and Eastern Europe-Australia and New Zealand        -3.64886668</span>
+<span class="co">#&gt; Eastern Asia-Australia and New Zealand                      -3.59354189</span>
+<span class="co">#&gt; Latin America and Caribbean-Australia and New Zealand       -2.92916652</span>
+<span class="co">#&gt; Middle East and Northern Africa-Australia and New Zealand   -3.66205885</span>
+<span class="co">#&gt; North America-Australia and New Zealand                     -2.38942221</span>
+<span class="co">#&gt; Southeastern Asia-Australia and New Zealand                 -3.79817773</span>
+<span class="co">#&gt; Southern Asia-Australia and New Zealand                     -4.62029016</span>
+<span class="co">#&gt; Sub-Saharan Africa-Australia and New Zealand                -4.87012741</span>
+<span class="co">#&gt; Western Europe-Australia and New Zealand                    -2.35460563</span>
+<span class="co">#&gt; Eastern Asia-Central and Eastern Europe                     -0.78700079</span>
+<span class="co">#&gt; Latin America and Caribbean-Central and Eastern Europe       0.09087351</span>
+<span class="co">#&gt; Middle East and Northern Africa-Central and Eastern Europe  -0.66936527</span>
+<span class="co">#&gt; North America-Central and Eastern Europe                     0.18725401</span>
+<span class="co">#&gt; Southeastern Asia-Central and Eastern Europe                -0.91700803</span>
+<span class="co">#&gt; Southern Asia-Central and Eastern Europe                    -1.78436365</span>
+<span class="co">#&gt; Sub-Saharan Africa-Central and Eastern Europe               -1.80630021</span>
+<span class="co">#&gt; Western Europe-Central and Eastern Europe                    0.65024012</span>
+<span class="co">#&gt; Latin America and Caribbean-Eastern Asia                    -0.58131144</span>
+<span class="co">#&gt; Middle East and Northern Africa-Eastern Asia                -1.32451715</span>
+<span class="co">#&gt; North America-Eastern Asia                                  -0.26437522</span>
+<span class="co">#&gt; Southeastern Asia-Eastern Asia                              -1.50798414</span>
+<span class="co">#&gt; Southern Asia-Eastern Asia                                  -2.35156652</span>
+<span class="co">#&gt; Sub-Saharan Africa-Eastern Asia                             -2.50688207</span>
+<span class="co">#&gt; Western Europe-Eastern Asia                                 -0.01241531</span>
+<span class="co">#&gt; Middle East and Northern Africa-Latin America and Caribbean -1.42809953</span>
+<span class="co">#&gt; North America-Latin America and Caribbean                   -0.55516652</span>
+<span class="co">#&gt; Southeastern Asia-Latin America and Caribbean               -1.66964442</span>
+<span class="co">#&gt; Southern Asia-Latin America and Caribbean                   -2.53501551</span>
+<span class="co">#&gt; Sub-Saharan Africa-Latin America and Caribbean              -2.57021260</span>
+<span class="co">#&gt; Western Europe-Latin America and Caribbean                  -0.10929268</span>
+<span class="co">#&gt; North America-Middle East and Northern Africa                0.14333589</span>
+<span class="co">#&gt; Southeastern Asia-Middle East and Northern Africa           -0.98592333</span>
+<span class="co">#&gt; Southern Asia-Middle East and Northern Africa               -1.84849980</span>
+<span class="co">#&gt; Sub-Saharan Africa-Middle East and Northern Africa          -1.90147345</span>
+<span class="co">#&gt; Western Europe-Middle East and Northern Africa               0.56507146</span>
+<span class="co">#&gt; Southeastern Asia-North America                             -3.72867773</span>
+<span class="co">#&gt; Southern Asia-North America                                 -4.55079016</span>
+<span class="co">#&gt; Sub-Saharan Africa-North America                            -4.80062741</span>
+<span class="co">#&gt; Western Europe-North America                                -2.28510563</span>
+<span class="co">#&gt; Southern Asia-Southeastern Asia                             -1.94473408</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southeastern Asia                        -2.06248932</span>
+<span class="co">#&gt; Western Europe-Southeastern Asia                             0.42249865</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southern Asia                            -1.38106345</span>
+<span class="co">#&gt; Western Europe-Southern Asia                                 1.10988389</span>
+<span class="co">#&gt; Western Europe-Sub-Saharan Africa                            1.91843647</span>
+<span class="co">#&gt;                                                                      upr</span>
+<span class="co">#&gt; Central and Eastern Europe-Australia and New Zealand        -0.256754011</span>
+<span class="co">#&gt; Eastern Asia-Australia and New Zealand                       0.194875220</span>
+<span class="co">#&gt; Latin America and Caribbean-Australia and New Zealand        0.485666516</span>
+<span class="co">#&gt; Middle East and Northern Africa-Australia and New Zealand   -0.212835891</span>
+<span class="co">#&gt; North America-Australia and New Zealand                      2.250422211</span>
+<span class="co">#&gt; Southeastern Asia-Australia and New Zealand                 -0.171044494</span>
+<span class="co">#&gt; Southern Asia-Australia and New Zealand                     -0.900138412</span>
+<span class="co">#&gt; Sub-Saharan Africa-Australia and New Zealand                -1.504030481</span>
+<span class="co">#&gt; Western Europe-Australia and New Zealand                     1.078938960</span>
+<span class="co">#&gt; Eastern Asia-Central and Eastern Europe                      1.293954817</span>
+<span class="co">#&gt; Latin America and Caribbean-Central and Eastern Europe       1.371247178</span>
+<span class="co">#&gt; Middle East and Northern Africa-Central and Eastern Europe   0.700091220</span>
+<span class="co">#&gt; North America-Central and Eastern Europe                     3.579366678</span>
+<span class="co">#&gt; Southeastern Asia-Central and Eastern Europe                 0.853406494</span>
+<span class="co">#&gt; Southern Asia-Central and Eastern Europe                     0.169555770</span>
+<span class="co">#&gt; Sub-Saharan Africa-Central and Eastern Europe               -0.662236994</span>
+<span class="co">#&gt; Western Europe-Central and Eastern Europe                    1.979713898</span>
+<span class="co">#&gt; Latin America and Caribbean-Eastern Asia                     1.536478105</span>
+<span class="co">#&gt; Middle East and Northern Africa-Eastern Asia                 0.848289078</span>
+<span class="co">#&gt; North America-Eastern Asia                                   3.524041887</span>
+<span class="co">#&gt; Southeastern Asia-Eastern Asia                               0.937428586</span>
+<span class="co">#&gt; Southern Asia-Eastern Asia                                   0.229804615</span>
+<span class="co">#&gt; Sub-Saharan Africa-Eastern Asia                             -0.468609157</span>
+<span class="co">#&gt; Western Europe-Eastern Asia                                  2.135415306</span>
+<span class="co">#&gt; Middle East and Northern Africa-Latin America and Caribbean -0.003295206</span>
+<span class="co">#&gt; North America-Latin America and Caribbean                    2.859666516</span>
+<span class="co">#&gt; Southeastern Asia-Latin America and Caribbean                0.143922197</span>
+<span class="co">#&gt; Southern Asia-Latin America and Caribbean                   -0.541913057</span>
+<span class="co">#&gt; Sub-Saharan Africa-Latin America and Caribbean              -1.360445294</span>
+<span class="co">#&gt; Western Europe-Latin America and Caribbean                   1.277126016</span>
+<span class="co">#&gt; North America-Middle East and Northern Africa                3.592558845</span>
+<span class="co">#&gt; Southeastern Asia-Middle East and Northern Africa            0.891595840</span>
+<span class="co">#&gt; Southern Asia-Middle East and Northern Africa                0.202965961</span>
+<span class="co">#&gt; Sub-Saharan Africa-Middle East and Northern Africa          -0.597789711</span>
+<span class="co">#&gt; Western Europe-Middle East and Northern Africa               2.034156606</span>
+<span class="co">#&gt; Southeastern Asia-North America                             -0.101544494</span>
+<span class="co">#&gt; Southern Asia-North America                                 -0.830638412</span>
+<span class="co">#&gt; Sub-Saharan Africa-North America                            -1.434530481</span>
+<span class="co">#&gt; Western Europe-North America                                 1.148438960</span>
+<span class="co">#&gt; Southern Asia-Southeastern Asia                              0.393527727</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southeastern Asia                        -0.342446355</span>
+<span class="co">#&gt; Western Europe-Southeastern Asia                             2.271056910</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southern Asia                             0.527334128</span>
+<span class="co">#&gt; Western Europe-Southern Asia                                 3.134878013</span>
+<span class="co">#&gt; Western Europe-Sub-Saharan Africa                            3.180054762</span>
+<span class="co">#&gt;                                                                 p adj</span>
+<span class="co">#&gt; Central and Eastern Europe-Australia and New Zealand        0.0110279</span>
+<span class="co">#&gt; Eastern Asia-Australia and New Zealand                      0.1200475</span>
+<span class="co">#&gt; Latin America and Caribbean-Australia and New Zealand       0.3959950</span>
+<span class="co">#&gt; Middle East and Northern Africa-Australia and New Zealand   0.0148505</span>
+<span class="co">#&gt; North America-Australia and New Zealand                     1.0000000</span>
+<span class="co">#&gt; Southeastern Asia-Australia and New Zealand                 0.0200680</span>
+<span class="co">#&gt; Southern Asia-Australia and New Zealand                     0.0001878</span>
+<span class="co">#&gt; Sub-Saharan Africa-Australia and New Zealand                0.0000004</span>
+<span class="co">#&gt; Western Europe-Australia and New Zealand                    0.9722986</span>
+<span class="co">#&gt; Eastern Asia-Central and Eastern Europe                     0.9987321</span>
+<span class="co">#&gt; Latin America and Caribbean-Central and Eastern Europe      0.0122030</span>
+<span class="co">#&gt; Middle East and Northern Africa-Central and Eastern Europe  1.0000000</span>
+<span class="co">#&gt; North America-Central and Eastern Europe                    0.0170083</span>
+<span class="co">#&gt; Southeastern Asia-Central and Eastern Europe                1.0000000</span>
+<span class="co">#&gt; Southern Asia-Central and Eastern Europe                    0.2021961</span>
+<span class="co">#&gt; Sub-Saharan Africa-Central and Eastern Europe               0.0000000</span>
+<span class="co">#&gt; Western Europe-Central and Eastern Europe                   0.0000001</span>
+<span class="co">#&gt; Latin America and Caribbean-Eastern Asia                    0.9092820</span>
+<span class="co">#&gt; Middle East and Northern Africa-Eastern Asia                0.9994553</span>
+<span class="co">#&gt; North America-Eastern Asia                                  0.1587204</span>
+<span class="co">#&gt; Southeastern Asia-Eastern Asia                              0.9990999</span>
+<span class="co">#&gt; Southern Asia-Eastern Asia                                  0.2085183</span>
+<span class="co">#&gt; Sub-Saharan Africa-Eastern Asia                             0.0002599</span>
+<span class="co">#&gt; Western Europe-Eastern Asia                                 0.0555311</span>
+<span class="co">#&gt; Middle East and Northern Africa-Latin America and Caribbean 0.0479233</span>
+<span class="co">#&gt; North America-Latin America and Caribbean                   0.4832340</span>
+<span class="co">#&gt; Southeastern Asia-Latin America and Caribbean               0.1822793</span>
+<span class="co">#&gt; Southern Asia-Latin America and Caribbean                   0.0000824</span>
+<span class="co">#&gt; Sub-Saharan Africa-Latin America and Caribbean              0.0000000</span>
+<span class="co">#&gt; Western Europe-Latin America and Caribbean                  0.1809182</span>
+<span class="co">#&gt; North America-Middle East and Northern Africa               0.0224810</span>
+<span class="co">#&gt; Southeastern Asia-Middle East and Northern Africa           1.0000000</span>
+<span class="co">#&gt; Southern Asia-Middle East and Northern Africa               0.2380242</span>
+<span class="co">#&gt; Sub-Saharan Africa-Middle East and Northern Africa          0.0000003</span>
+<span class="co">#&gt; Western Europe-Middle East and Northern Africa              0.0000030</span>
+<span class="co">#&gt; Southeastern Asia-North America                             0.0294290</span>
+<span class="co">#&gt; Southern Asia-North America                                 0.0003101</span>
+<span class="co">#&gt; Sub-Saharan Africa-North America                            0.0000008</span>
+<span class="co">#&gt; Western Europe-North America                                0.9873720</span>
+<span class="co">#&gt; Southern Asia-Southeastern Asia                             0.5086390</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southeastern Asia                        0.0005847</span>
+<span class="co">#&gt; Western Europe-Southeastern Asia                            0.0002694</span>
+<span class="co">#&gt; Sub-Saharan Africa-Southern Asia                            0.9133646</span>
+<span class="co">#&gt; Western Europe-Southern Asia                                0.0000000</span>
+<span class="co">#&gt; Western Europe-Sub-Saharan Africa                           0.0000000</span></code></pre></div>
+</div>
+<div id="independence-of-the-data" class="section level3" number="5.1.2">
+<h3>
+<span class="header-section-number">5.1.2</span> independence of the data<a class="anchor" aria-label="anchor" href="#independence-of-the-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>Let’s think about the data and pose some questions.</p>
+<ol style="list-style-type: upper-alpha">
+<li>Do you think that countries in the same region tend to be more similar to each other?
+If your answer is yes, then the countries are not really independent and identically distributed data. This could be a problem with statistical models. So you have three options:</li>
+</ol>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>Ignore the problem, or argue why you think your data IS independent (you will no be the only one)</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>Do not ignore it, take the average of each region and then make a model using this average. Yes, what you think is correct, you loose a lot of data!</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: decimal">
+<li>Do one linear model for each region…data costly (e.g. Australia and North America have only two data points)</li>
+</ol></li>
+<li><ol start="4" style="list-style-type: decimal">
+<li>Try a linear mixed model</li>
+</ol></li>
+</ul>
+<ol start="2" style="list-style-type: upper-alpha">
+<li><p>How variable is the happiness between regions?</p></li>
+<li><p>How does happiness depend on other predictors such as health, economy and generosity?</p></li>
+</ol>
+</div>
+<div id="visualization-of-the-data" class="section level3" number="5.1.3">
+<h3>
+<span class="header-section-number">5.1.3</span> visualization of the data<a class="anchor" aria-label="anchor" href="#visualization-of-the-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>We can do some plots to see how data look like.
+In this plot we visualize how economy affects happiness in every region. We could do one plot per predictor.</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="va">Happiness_2016</span> <span class="op">&lt;-</span> <span class="va">happiness_2016</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Region</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mean.reg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Happiness.Score</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">Happiness_2016</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Economy..GDP.per.Capita.</span>, y <span class="op">=</span> <span class="va">Happiness.Score</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">stat_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="co"># Put the points on top of lines</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="st">"Region"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Economy"</span>, y <span class="op">=</span> <span class="st">"Happyness"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">mean.reg</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">'red'</span>, lty<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span>
+<span class="co">#&gt; `geom_smooth()` using formula 'y ~ x'</span></code></pre></div>
+<div class="inline-figure"><img src="04-regression_files/figure-html/unnamed-chunk-4-1.png" width="672"></div>
+<p>Given what we see in the data, we can try two different models:</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: Matrix</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'Matrix'</span>
+<span class="co">#&gt; The following objects are masked from 'package:tidyr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     expand, pack, unpack</span>
+<span class="va">happy.mixed.model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Economy..GDP.per.Capita.</span> <span class="op">+</span> <span class="va">Health..Life.Expectancy.</span><span class="op">+</span> <span class="va">Generosity</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">Region</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">happiness_2016</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">happy.mixed.model</span><span class="op">)</span>
+<span class="co">#&gt; Linear mixed model fit by REML ['lmerMod']</span>
+<span class="co">#&gt; Formula: </span>
+<span class="co">#&gt; Happiness.Score ~ Economy..GDP.per.Capita. + Health..Life.Expectancy. +  </span>
+<span class="co">#&gt;     Generosity + (1 | Region)</span>
+<span class="co">#&gt;    Data: happiness_2016</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; REML criterion at convergence: 288.4</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Scaled residuals: </span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -3.7228 -0.5314  0.0542  0.6596  3.6518 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Random effects:</span>
+<span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span>
+<span class="co">#&gt;  Region   (Intercept) 0.1295   0.3599  </span>
+<span class="co">#&gt;  Residual             0.3302   0.5746  </span>
+<span class="co">#&gt; Number of obs: 157, groups:  Region, 10</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Fixed effects:</span>
+<span class="co">#&gt;                          Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                3.0080     0.2890  10.407</span>
+<span class="co">#&gt; Economy..GDP.per.Capita.   1.5252     0.2136   7.142</span>
+<span class="co">#&gt; Health..Life.Expectancy.   1.1030     0.4661   2.367</span>
+<span class="co">#&gt; Generosity                 1.2551     0.4088   3.070</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Correlation of Fixed Effects:</span>
+<span class="co">#&gt;             (Intr) E..GDP H..L.E</span>
+<span class="co">#&gt; Ec..GDP..C. -0.217              </span>
+<span class="co">#&gt; Hlth..Lf.E. -0.468 -0.624       </span>
+<span class="co">#&gt; Generosity  -0.415  0.174 -0.118</span>
+
+<span class="va">happy.mixed.model.2</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">Happiness.Score</span> <span class="op">~</span> <span class="va">Economy..GDP.per.Capita.</span> <span class="op">+</span> <span class="va">Health..Life.Expectancy.</span><span class="op">+</span> <span class="va">Generosity</span> <span class="op">+</span> <span class="op">(</span><span class="va">Economy..GDP.per.Capita.</span><span class="op">|</span><span class="va">Region</span><span class="op">)</span>, 
+                             data <span class="op">=</span> <span class="va">happiness_2016</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">happy.mixed.model</span><span class="op">)</span>
+<span class="co">#&gt; Linear mixed model fit by REML ['lmerMod']</span>
+<span class="co">#&gt; Formula: </span>
+<span class="co">#&gt; Happiness.Score ~ Economy..GDP.per.Capita. + Health..Life.Expectancy. +  </span>
+<span class="co">#&gt;     Generosity + (1 | Region)</span>
+<span class="co">#&gt;    Data: happiness_2016</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; REML criterion at convergence: 288.4</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Scaled residuals: </span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -3.7228 -0.5314  0.0542  0.6596  3.6518 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Random effects:</span>
+<span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span>
+<span class="co">#&gt;  Region   (Intercept) 0.1295   0.3599  </span>
+<span class="co">#&gt;  Residual             0.3302   0.5746  </span>
+<span class="co">#&gt; Number of obs: 157, groups:  Region, 10</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Fixed effects:</span>
+<span class="co">#&gt;                          Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                3.0080     0.2890  10.407</span>
+<span class="co">#&gt; Economy..GDP.per.Capita.   1.5252     0.2136   7.142</span>
+<span class="co">#&gt; Health..Life.Expectancy.   1.1030     0.4661   2.367</span>
+<span class="co">#&gt; Generosity                 1.2551     0.4088   3.070</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Correlation of Fixed Effects:</span>
+<span class="co">#&gt;             (Intr) E..GDP H..L.E</span>
+<span class="co">#&gt; Ec..GDP..C. -0.217              </span>
+<span class="co">#&gt; Hlth..Lf.E. -0.468 -0.624       </span>
+<span class="co">#&gt; Generosity  -0.415  0.174 -0.118</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">happy.mixed.model.2</span><span class="op">)</span>
+<span class="co">#&gt; Linear mixed model fit by REML ['lmerMod']</span>
+<span class="co">#&gt; Formula: </span>
+<span class="co">#&gt; Happiness.Score ~ Economy..GDP.per.Capita. + Health..Life.Expectancy. +  </span>
+<span class="co">#&gt;     Generosity + (Economy..GDP.per.Capita. | Region)</span>
+<span class="co">#&gt;    Data: happiness_2016</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; REML criterion at convergence: 276.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Scaled residuals: </span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -3.7297 -0.5007  0.0021  0.6491  3.1793 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Random effects:</span>
+<span class="co">#&gt;  Groups   Name                     Variance Std.Dev. Corr </span>
+<span class="co">#&gt;  Region   (Intercept)              0.09681  0.3111        </span>
+<span class="co">#&gt;           Economy..GDP.per.Capita. 0.42078  0.6487   -0.87</span>
+<span class="co">#&gt;  Residual                          0.29387  0.5421        </span>
+<span class="co">#&gt; Number of obs: 157, groups:  Region, 10</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Fixed effects:</span>
+<span class="co">#&gt;                          Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                2.9115     0.2270  12.824</span>
+<span class="co">#&gt; Economy..GDP.per.Capita.   1.8639     0.3101   6.010</span>
+<span class="co">#&gt; Health..Life.Expectancy.   0.6234     0.4415   1.412</span>
+<span class="co">#&gt; Generosity                 1.0923     0.3895   2.805</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Correlation of Fixed Effects:</span>
+<span class="co">#&gt;             (Intr) E..GDP H..L.E</span>
+<span class="co">#&gt; Ec..GDP..C. -0.390              </span>
+<span class="co">#&gt; Hlth..Lf.E. -0.323 -0.559       </span>
+<span class="co">#&gt; Generosity  -0.440  0.049 -0.092</span></code></pre></div>
+<p>We do not have p-values here hummm!</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/runehaubo/lmerTestR">lmerTest</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'lmerTest'</span>
+<span class="co">#&gt; The following object is masked from 'package:lme4':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     lmer</span>
+<span class="co">#&gt; The following object is masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     step</span>
+<span class="co"># Test significance of random effects</span>
+<span class="fu"><a href="https://rdrr.io/pkg/lmerTest/man/ranova.html">ranova</a></span><span class="op">(</span><span class="va">happy.mixed.model.2</span><span class="op">)</span>
+<span class="co">#&gt; ANOVA-like table for random-effects: Single term deletions</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model:</span>
+<span class="co">#&gt; Happiness.Score ~ Economy..GDP.per.Capita. + Health..Life.Expectancy. + Generosity + (Economy..GDP.per.Capita. | Region)</span>
+<span class="co">#&gt;                                                                 npar</span>
+<span class="co">#&gt; &lt;none&gt;                                                             8</span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region)    6</span>
+<span class="co">#&gt;                                                                  logLik</span>
+<span class="co">#&gt; &lt;none&gt;                                                          -138.45</span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region) -144.21</span>
+<span class="co">#&gt;                                                                    AIC</span>
+<span class="co">#&gt; &lt;none&gt;                                                          292.89</span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region) 300.42</span>
+<span class="co">#&gt;                                                                    LRT</span>
+<span class="co">#&gt; &lt;none&gt;                                                                </span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region) 11.529</span>
+<span class="co">#&gt;                                                                 Df</span>
+<span class="co">#&gt; &lt;none&gt;                                                            </span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region)  2</span>
+<span class="co">#&gt;                                                                 Pr(&gt;Chisq)</span>
+<span class="co">#&gt; &lt;none&gt;                                                                    </span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region)   0.003137</span>
+<span class="co">#&gt;                                                                   </span>
+<span class="co">#&gt; &lt;none&gt;                                                            </span>
+<span class="co">#&gt; Economy..GDP.per.Capita. in (Economy..GDP.per.Capita. | Region) **</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+
+<span class="co">#Test significance of fixed effects</span>
+<span class="va">ml.happy.mixed.model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span><span class="va">happy.mixed.model</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># this changes the algorithm used to fit the model</span>
+
+<span class="co">#Finally we can test significance</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/lmerTest/man/as_lmerModLmerTest.html">as_lmerModLmerTest</a></span><span class="op">(</span><span class="va">ml.happy.mixed.model</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Type III Analysis of Variance Table with Satterthwaite's method</span>
+<span class="co">#&gt;                           Sum Sq Mean Sq NumDF  DenDF</span>
+<span class="co">#&gt; Economy..GDP.per.Capita. 16.9971 16.9971     1 152.49</span>
+<span class="co">#&gt; Health..Life.Expectancy.  1.9558  1.9558     1 138.78</span>
+<span class="co">#&gt; Generosity                3.1992  3.1992     1 151.95</span>
+<span class="co">#&gt;                          F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; Economy..GDP.per.Capita. 52.3454 2.119e-11 ***</span>
+<span class="co">#&gt; Health..Life.Expectancy.  6.0233  0.015356 *  </span>
+<span class="co">#&gt; Generosity                9.8524  0.002038 ** </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+</div>
+<div id="ploting-the-data-in-a-map" class="section level3" number="5.1.4">
+<h3>
+<span class="header-section-number">5.1.4</span> Ploting the data in a map<a class="anchor" aria-label="anchor" href="#ploting-the-data-in-a-map"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ropenscilabs/rnaturalearth">rnaturalearth</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: rnaturalearth</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ropenscilabs/rnaturalearthdata">rnaturalearthdata</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: rnaturalearthdata</span>
+<span class="va">world</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="st">"medium"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="co"># this is another function to get polygons of countries. </span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Longitude"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Latitude"</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"World map"</span>, subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"("</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/dimensions.html">dim</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">" countries)"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="04-regression_files/figure-html/unnamed-chunk-8-1.png" width="672"></div>
+<pre><code>#both df woth the same name of the varaible we will use to join
+colnames(happiness_2016)[1] &lt;- "name"
+Happiness_GEO &lt;- left_join(world, happiness_2016, by="name")</code></pre>
+<pre><code>ggplot(data = Happiness_GEO) +
+    geom_sf(aes(fill = Happiness.Score )) +
+    scale_fill_viridis_c(option = "plasma") +  # this allows you to choose different colour scale
+    ggtitle("World Happiness Studies")</code></pre>
+<div id="where-is-the-model-working-better" class="section level4" number="5.1.4.1">
+<h4>
+<span class="header-section-number">5.1.4.1</span> Where is the model working better?<a class="anchor" aria-label="anchor" href="#where-is-the-model-working-better"><i class="fas fa-link"></i></a>
+</h4>
+<pre><code>happy.predictions &lt;- predict(happy.mixed.model)
+#Expected - Observed
+happy.residuasl &lt;-  (happiness_2016$Happiness.Score - happy.predictions) # Obaserved - predicted
+Happiness_2016$Model.Residuals &lt;- happy.residuasl
+Happiness_GEO &lt;- left_join(world, Happiness_2016, by="name")</code></pre>
+<pre><code>ggplot(data = Happiness_GEO) +
+    geom_sf(aes(fill = Model.Residuals )) +
+    scale_fill_viridis_c(option = "plasma") +  # this allows you to choose different colour scale
+    ggtitle("World Happiness Studies")</code></pre>
+
+</div>
+</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -203,14 +774,20 @@
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#regression"><span class="header-section-number">5</span> Regression</a></li>
-<li><a class="nav-link" href="#linear-regression-models"><span class="header-section-number">5.1</span> Linear Regression Models</a></li>
-<li><a class="nav-link" href="#citations"><span class="header-section-number">5.2</span> Citations</a></li>
+<li>
+<a class="nav-link" href="#linear-regression-models"><span class="header-section-number">5.1</span> Linear Regression Models</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#try-some-models"><span class="header-section-number">5.1.1</span> try some models</a></li>
+<li><a class="nav-link" href="#independence-of-the-data"><span class="header-section-number">5.1.2</span> independence of the data</a></li>
+<li><a class="nav-link" href="#visualization-of-the-data"><span class="header-section-number">5.1.3</span> visualization of the data</a></li>
+<li><a class="nav-link" href="#ploting-the-data-in-a-map"><span class="header-section-number">5.1.4</span> Ploting the data in a map</a></li>
+</ul>
+</li>
 </ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/PythonCoderUnicorn/bookdown2/blob/master/04-citations.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/PythonCoderUnicorn/bookdown2/edit/master/04-citations.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/PythonCoderUnicorn/bookdown2/blob/master/04-regression.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/PythonCoderUnicorn/bookdown2/edit/master/04-regression.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
