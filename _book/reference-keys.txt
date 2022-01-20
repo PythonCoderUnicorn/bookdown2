@@ -38,8 +38,8 @@ load-the-shape-files
 check-reference-system
 crop-the-raster-to-the-shape-file-extent
 plot-with-tmap
-footnotes-and-citations
-footnotes
+regression
+linear-regression-models
 citations
 blocks
 equations

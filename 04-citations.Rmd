@@ -1,18 +1,21 @@
-# Footnotes and citations 
+# Regression
 
-## Footnotes
+## Linear Regression Models
 
-Footnotes are put inside the square brackets after a caret `^[]`. Like this one ^[This is a footnote.]. 
+Linear Regression or Linear Model (LM) using happiness data from the World Health Organization, this section is brought to you by **RLadies Freiburg** Divya and Elisa. The happiness data can be found [here](https://raw.githubusercontent.com/rladies/meetup-presentations_freiburg/master/2019-10-Modelling%201%20-%20LM%2C%20LMM%20and%20plots/Happiness_2016.csv). 
+
+```{r echo=FALSE}
+# load in the data (the dataset is read in as raw)
+happiness_2016 = read.csv('https://raw.githubusercontent.com/rladies/meetup-presentations_freiburg/master/2019-10-Modelling%201%20-%20LM%2C%20LMM%20and%20plots/Happiness_2016.csv')
+
+knitr::kable(head(happiness_2016) ) 
+```
+
+
+
+The question is, *what parameters are there? What questions can we address using these factors.?* *Does trust in government a variable?* 
 
 ## Citations
 
-Reference items in your bibliography file(s) using `@key`.
-
-For example, we are using the **bookdown** package [@R-bookdown] (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and **knitr** [@xie2015] (this citation was added manually in an external file book.bib). 
-Note that the `.bib` files need to be listed in the index.Rmd with the YAML `bibliography` key.
 
 
-The `bs4_book` theme makes footnotes appear inline when you click on them. In this example book, we added `csl: chicago-fullnote-bibliography.csl` to the `index.Rmd` YAML, and include the `.csl` file. To download a new style, we recommend: https://www.zotero.org/styles/
-
-
-The RStudio Visual Markdown Editor can also make it easier to insert citations: <https://rstudio.github.io/visual-markdown-editing/#/citations>
